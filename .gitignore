@@ -11,3 +11,4 @@ propuestas/
 documentos/
 *.log
 .env*
+guia/
