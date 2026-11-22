@@ -142,6 +142,18 @@ inventario-patrimonio/
 - Banner photo: Templo Parroquial Inmaculado Corazón de María, by [Martín Ustáriz](https://www.instagram.com/p/DD42s0TPUU5/).
 - Logos: Universidad José Antonio Páez and its Escuela de Arquitectura.
 
+## License
+
+The code is released under the [MIT License](LICENSE).
+
+The license covers the code only. These are **not** included and remain with their owners:
+
+- The record sheets (PDF fichas) and their content: their authors and the Arquidiócesis de Valencia.
+- The UJAP and Escuela de Arquitectura logos (`assets-src/ujap-logo.png`, `assets-src/arquitectura*.png`).
+- The banner photo (`assets-src/iglesia.png`) by Martín Ustáriz.
+
+---
+
 <p align="center">
   Built by <strong>Daniel Hernández</strong> (Manguito Developer) ·
   <a href="https://github.com/ManguitoDeveloper">GitHub</a> ·

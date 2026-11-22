@@ -179,6 +179,18 @@
     .person .kinds { color: var(--muted); font-size: 0.8125rem; }
     .person .kinds::first-letter { text-transform: uppercase; }
 
+    /* ---------- Aviso de actualización ---------- */
+    .toast { position: fixed; left: 50%; bottom: var(--space-lg); translate: -50% 0; z-index: 20; display: flex; align-items: center; gap: var(--space-sm);
+      width: max-content; max-width: calc(100vw - 32px); padding: 8px 8px 8px 16px; background: var(--ink); color: var(--card); border-radius: 6px;
+      font-size: 0.9375rem; box-shadow: 0 12px 32px oklch(0.2 0.02 40 / .3); animation: rise .35s var(--ease-out); }
+    .toast[hidden] { display: none; }
+    .toast-act { font: 600 0.875rem/1 var(--sans); color: var(--ink); background: var(--card); border: 0; border-radius: 4px; padding: 10px 14px; cursor: pointer; white-space: nowrap; }
+    .toast-act:hover { background: var(--paper-2); }
+    .toast-act[hidden] { display: none; }
+    .toast .icon-btn { width: 32px; height: 32px; color: oklch(0.82 0.015 60); }
+    .toast .icon-btn:hover { background: transparent; border-color: transparent; color: var(--card); }
+    .toast :focus-visible { outline-color: var(--card); }
+
     /* ---------- Pie ---------- */
     footer { border-top: 1px solid var(--rule); padding-block: var(--space-2xl); font-size: 0.875rem; color: var(--muted); }
     footer .wrap { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: var(--space-xl); }
@@ -186,6 +198,8 @@
       margin-top: var(--space-xl); padding-top: var(--space-lg); font-size: 0.8125rem;
       background: linear-gradient(var(--rule), var(--rule)) no-repeat center top / calc(100% - 2 * var(--gutter)) 1px; }
     .dev-credit b { color: var(--ink-2); font-weight: 600; }
+    .dev-who { display: grid; gap: 2px; }
+    .nw { white-space: nowrap; }
     .dev-links { display: flex; gap: var(--space-md); }
     .dev-links a { display: inline-flex; align-items: center; gap: 6px; color: var(--ink-2); text-decoration: none; }
     .dev-links a:hover { color: var(--red); }
@@ -290,6 +304,12 @@
     @media (max-width: 900px) {
       .catalog-head { grid-template-columns: 1fr; }
       footer .wrap { grid-template-columns: 1fr; gap: var(--space-lg); }
+      /* Pie en una columna: todo centrado */
+      footer .wrap { justify-items: center; text-align: center; }
+      footer p, footer strong { text-wrap: balance; }
+      .foot-logos { justify-content: center; }
+      footer .wrap.dev-credit { flex-direction: column; justify-content: center; }
+      .dev-links { justify-content: center; }
     }
     @media (max-width: 600px) {
       .masthead .tag { display: none; }
@@ -307,7 +327,7 @@
       .vpages { padding: var(--space-xs); gap: var(--space-xs); }
     }
     @media print {
-      .masthead, .hero, .search, .chips, .acts, .team, footer, .viewer { display: none !important; }
+      .masthead, .hero, .search, .chips, .acts, .team, .toast, footer, .viewer { display: none !important; }
       .catalog { border: 0; padding: 0; }
     }
   </style>
@@ -424,7 +444,10 @@
       </div>
     </div>
     <div class="wrap dev-credit">
-      <span>Sitio web desarrollado por <b>Daniel Hernández</b> (Manguito Developer)</span>
+      <span class="dev-who">
+        <span>Sitio web desarrollado por <b>Daniel Hernández</b> <span class="nw">(Manguito Developer)</span></span>
+        <span>© 2026 · Código abierto bajo <a href="https://github.com/ManguitoDeveloper/valencia-archdiocese-heritage-inventory/blob/main/LICENSE" target="_blank" rel="noopener">licencia MIT</a></span>
+      </span>
       <span class="dev-links">
         <a href="https://github.com/ManguitoDeveloper" target="_blank" rel="noopener" aria-label="GitHub de Daniel Hernández"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.53-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.71 1.26 3.37.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.42-2.7 5.39-5.26 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5Z"/></svg>GitHub</a>
         <a href="https://www.linkedin.com/in/manguito-dev/" target="_blank" rel="noopener" aria-label="LinkedIn de Daniel Hernández"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0Z"/></svg>LinkedIn</a>
@@ -460,6 +483,12 @@
     <div class="vpages" id="vpages"></div>
   </div>
 
+  <div class="toast" id="toast" role="status" hidden>
+    <span id="toast-msg"></span>
+    <button class="toast-act" id="toast-act" type="button" hidden>Actualizar</button>
+    <button class="icon-btn" id="toast-x" type="button" aria-label="Cerrar aviso"><svg><use href="#i-x"/></svg></button>
+  </div>
+
   <script type="application/json" id="catalog-data">{{DATA}}</script>
   <script>{{CATALOG_VIEW}}</script>
   <script>
@@ -470,7 +499,7 @@
 
     // Datos incrustados en la página (sin petición extra); la lista ya viene pre-renderizada
     const data = JSON.parse($("#catalog-data").textContent);
-    const docs = data.documentos, cats = data.categorias, byId = new Map(docs.map((d) => [d.id, d]));
+    let docs = data.documentos, cats = data.categorias, byId = new Map(docs.map((d) => [d.id, d]));   // "let": se renuevan al publicarse fichas nuevas
     let active = "Todas";
 
     // ---------- Catálogo (solo se vuelve a dibujar al buscar o filtrar) ----------
@@ -695,6 +724,53 @@
     // Cabecera fija: sombra suave al desplazarse
     { const mh = $(".masthead"), onScroll = () => mh.classList.toggle("scrolled", scrollY > 4);
       addEventListener("scroll", onScroll, { passive: true }); onScroll(); }
+
+    // ---------- Actualización automática ----------
+    // Cada publicación escribe /version.json. Al volver a la pestaña (y cada 5 min con ella a la vista) se consulta:
+    //  · solo cambiaron las fichas → el catálogo se actualiza solo, sin recargar;
+    //  · cambió el sitio (diseño/código) → aviso con botón para recargar.
+    (() => {
+      const BUILD = {{VERSION}};
+      let busy = false, stale = false, last = Date.now(), hideT;
+      const toast = $("#toast"), act = $("#toast-act");
+      const notice = (text, action) => {
+        clearTimeout(hideT);
+        $("#toast-msg").textContent = text;
+        act.hidden = !action; act.onclick = action || null;
+        toast.hidden = false;
+        if (!action) hideT = setTimeout(() => (toast.hidden = true), 7000);
+      };
+      $("#toast-x").onclick = () => (toast.hidden = true);
+
+      const apply = (next, version) => {
+        const before = new Set(docs.map((d) => d.id));
+        docs = next.documentos; cats = next.categorias; byId = new Map(docs.map((d) => [d.id, d]));
+        if (active !== "Todas" && !cats.includes(active)) active = "Todas";
+        $("#facts").innerHTML = CatalogView.facts(docs, cats);
+        $("#count").textContent = CatalogView.count(docs, cats);
+        renderChips(); render();
+        const team = $("#team-list"); if (team) team.innerHTML = CatalogView.team(docs, cats);
+        BUILD.data = version;
+        const added = docs.filter((d) => !before.has(d.id)).length;
+        notice(added ? `${plural(added, "ficha nueva", "fichas nuevas")} en el catálogo.` : "El catálogo se actualizó.");
+      };
+
+      const check = async () => {
+        if (busy || stale || document.hidden) return;
+        busy = true; last = Date.now();
+        try {
+          const v = await (await fetch("/version.json", { cache: "no-store" })).json();
+          if (v.code !== BUILD.code) { stale = true; notice("Hay una versión nueva del sitio.", () => location.reload()); return; }
+          if (v.data === BUILD.data) return;
+          const html = await (await fetch("/", { cache: "no-store" })).text();
+          const next = JSON.parse(new DOMParser().parseFromString(html, "text/html").querySelector("#catalog-data").textContent);
+          apply(next, v.data);
+        } catch { /* sin conexión o publicación a medias: se reintenta en la próxima consulta */ }
+        finally { busy = false; }
+      };
+      setInterval(check, 5 * 60e3);
+      document.addEventListener("visibilitychange", () => { if (!document.hidden && Date.now() - last > 30e3) check(); });
+    })();
 
     // ---------- Carga ----------
     // Enlace directo (p. ej. desde un QR): /?d=<id>

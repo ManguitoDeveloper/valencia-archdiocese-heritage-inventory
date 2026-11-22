@@ -7,6 +7,7 @@
 import { readdir, stat, mkdir, cp, rm, writeFile, readFile, access } from "node:fs/promises";
 import { join, relative, extname, basename, sep } from "node:path";
 import { createRequire } from "node:module";
+import { createHash } from "node:crypto";
 import sharp from "sharp";
 import QRCode from "qrcode";
 import potrace from "potrace";
@@ -202,7 +203,18 @@ const require = createRequire(import.meta.url);
 const CatalogView = require("./lib/catalog-view.cjs");
 const viewSource = await readFile("lib/catalog-view.cjs", "utf8");
 const inlineJSON = (v) => JSON.stringify(v).replaceAll("<", "\\u003c");   // evita cerrar la etiqueta <script>
+// Huellas de la publicación (dist/version.json): la página abierta las consulta para actualizarse sola.
+//   data: cambia si cambian las fichas (sin el tamaño: re-guardar un PDF puede variarlo sin cambiar nada)
+//   code: cambia si cambia el sitio (plantilla, vista del catálogo) → la página pide recargar
+const hash = (s) => createHash("sha256").update(s).digest("hex").slice(0, 16);
+const template = fill(await readFile("public/index.html", "utf8"));
+const version = {
+  data: hash(JSON.stringify([categories, docs.map(({ size, ...d }) => d)])),
+  code: hash(template + viewSource),
+};
+await writeFile(join(OUT, "version.json"), JSON.stringify(version));
 const prerender = {
+  "{{VERSION}}": JSON.stringify(version),
   "{{FACTS}}": CatalogView.facts(docs, categories),
   "{{COUNT}}": CatalogView.esc(CatalogView.count(docs, categories)),
   "{{CHIPS}}": CatalogView.chips(docs, categories, "Todas"),
@@ -211,7 +223,7 @@ const prerender = {
   "{{DATA}}": inlineJSON({ categorias: categories, documentos: docs }),
   "{{CATALOG_VIEW}}": viewSource.replace(/^if \(typeof module[^\n]*\n?/m, ""),
 };
-let indexHtml = fill(await readFile("public/index.html", "utf8"));
+let indexHtml = template;
 for (const [k, v] of Object.entries(prerender)) indexHtml = indexHtml.replaceAll(k, () => v);   // función: sin interpretar "$" del contenido
 await writeFile(join(OUT, "index.html"), indexHtml);
 
