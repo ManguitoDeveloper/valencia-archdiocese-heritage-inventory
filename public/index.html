@@ -239,7 +239,7 @@
     .splash-arq { width: clamp(96px, 20vw, 140px); height: auto; overflow: visible; }
     /* EAUJAP: las barras se rellenan en zigzag (trazo grueso recortado por la forma, sin borde) y cada letra
        aparece cuando termina de llenarse la parte del logo que tiene encima (--at = fracción del recorrido) */
-    .splash-arq { --eau-start: .45s; --eau-dur: 1.6s; }
+    .splash-arq { --eau-start: .45s; --eau-dur: 1.2s; }
     .eau-snake { fill: none; stroke: var(--ink); stroke-linecap: square; stroke-linejoin: miter; stroke-dasharray: 1; stroke-dashoffset: 1;
       animation: splash-draw var(--eau-dur) linear var(--eau-start) forwards; }
     .eau-letter { fill: var(--ink); opacity: 0; transform-box: fill-box; transform-origin: 50% 100%;
@@ -658,7 +658,7 @@
         root.classList.add("splash-done");                                // arranca la entrada del contenido
         Promise.all(moves.map((m) => m.finished)).then(land, land);
       };
-      setTimeout(() => fly(false), 2400);
+      setTimeout(() => fly(false), 2100);
       sp.addEventListener("click", () => fly(true));
       addEventListener("keydown", () => fly(true), { once: true });
     })();
