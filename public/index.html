@@ -237,9 +237,14 @@
     .splash-ujap { width: clamp(84px, 18vw, 128px); height: auto; animation: splash-in .7s var(--ease-out) .1s both; }
     .splash-rule { width: 1px; align-self: stretch; background: var(--rule-strong); transform-origin: top; animation: splash-grow .6s var(--ease-out) .35s both; }
     .splash-arq { width: clamp(96px, 20vw, 140px); height: auto; overflow: visible; }
-    .arq-fill { fill: var(--ink); opacity: 0; animation: splash-fade .5s var(--ease-out) 1.55s forwards; }
-    .arq-line { fill: none; stroke: var(--ink); stroke-width: 4; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 1;
-      animation: splash-draw 1.1s cubic-bezier(.65, 0, .35, 1) calc(.45s + var(--k) * 70ms) forwards, splash-fade-out .4s ease 1.9s forwards; }
+    /* EAUJAP: las barras se rellenan en zigzag (trazo grueso recortado por la forma, sin borde) y cada letra
+       aparece cuando termina de llenarse la parte del logo que tiene encima (--at = fracción del recorrido) */
+    .splash-arq { --eau-start: .45s; --eau-dur: 1.6s; }
+    .eau-snake { fill: none; stroke: var(--ink); stroke-linecap: square; stroke-linejoin: miter; stroke-dasharray: 1; stroke-dashoffset: 1;
+      animation: splash-draw var(--eau-dur) linear var(--eau-start) forwards; }
+    .eau-letter { fill: var(--ink); opacity: 0; transform-box: fill-box; transform-origin: 50% 100%;
+      animation: eau-type .22s cubic-bezier(.2, 1.4, .4, 1) calc(var(--eau-start) + var(--eau-dur) * var(--at)) both; }
+    @keyframes eau-type { 0% { opacity: 0; transform: translateY(14%) scale(.85); } 1% { opacity: 1; } 100% { opacity: 1; transform: none; } }
     .splash-names { display: grid; justify-items: center; gap: 2px; line-height: 1.25; }
     .splash-names > * { display: inline-block; white-space: nowrap; }
     .splash-name { font-weight: 600; font-size: clamp(1.25rem, 1rem + 1.4vw, 1.75rem); color: var(--ink); animation: splash-in .6s var(--ease-out) 1.1s both; }
@@ -248,8 +253,6 @@
     @keyframes splash-in { from { opacity: 0; transform: translateY(8px) scale(.96); } to { opacity: 1; transform: none; } }
     @keyframes splash-grow { from { transform: scaleY(0); } to { transform: scaleY(1); } }
     @keyframes splash-draw { to { stroke-dashoffset: 0; } }
-    @keyframes splash-fade { from { opacity: 0; } to { opacity: 1; } }
-    @keyframes splash-fade-out { to { opacity: 0; } }
     .splash-on body { overflow: hidden; }
     .splash-on.splash-done body { overflow: auto; }
     .splash-on:not(.splash-done) .reveal { animation-play-state: paused; }

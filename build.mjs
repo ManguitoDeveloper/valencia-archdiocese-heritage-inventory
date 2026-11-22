@@ -12,6 +12,7 @@ import QRCode from "qrcode";
 import potrace from "potrace";
 import { stampQR } from "./lib/stamp-qr.mjs";
 import { fitPages } from "./lib/fit-pages.mjs";
+import { eaujap } from "./lib/eaujap.mjs";
 
 // En GitHub la dirección viene de la variable SITE_URL; esta es la de respaldo para compilar en local.
 const SITE_URL = (process.env.SITE_URL || "https://patrimonio-arquidiocesis-valencia.arq-hillary-ruiz.workers.dev").replace(/\/$/, "");
@@ -77,18 +78,16 @@ for (const [name, height] of [["arquitectura", 120], ["arquitectura-completo", 1
   }
 }
 
-// Marca EAUJAP vectorizada (para dibujarla con animación en la pantalla de bienvenida)
+// Marca EAUJAP vectorizada: animación de la pantalla de bienvenida (zigzag + letras) y, desde la misma
+// geometría alineada, la imagen de la cabecera, para que la animación aterrice en un logo idéntico.
 let arqSvg = "";
 const arqMark = join(ASSETS, "arquitectura.png");
 if (await exists(arqMark)) {
   const svg = await new Promise((ok, fail) => potrace.trace(arqMark, { threshold: 128, turdSize: 8, optTolerance: 0.3 }, (e, r) => (e ? fail(e) : ok(r))));
-  const [, w, h] = svg.match(/width="(\d+)" height="(\d+)"/);
-  const d = svg.match(/ d="([^"]+)"/)[1].trim();
-  const parts = d.split(/(?=M)/).map((p) => p.trim()).filter(Boolean);
-  arqSvg = `<svg class="splash-arq" viewBox="0 0 ${w} ${h}" role="img" aria-label="Escuela de Arquitectura UJAP">`
-    + `<path class="arq-fill" fill-rule="evenodd" d="${d}"/>`
-    + parts.map((p, i) => `<path class="arq-line" pathLength="1" style="--k:${i}" d="${p}"/>`).join("")
-    + `</svg>`;
+  const [, w, h] = svg.match(/width="(\d+)" height="(\d+)"/).map(Number);
+  const mark = eaujap(svg.match(/ d="([^"]+)"/)[1].trim(), w, h, { ink: "#2b211c" });
+  arqSvg = mark.splash;
+  await sharp(Buffer.from(mark.static), { density: 144 }).resize({ height: 120 }).webp({ quality: 90, alphaQuality: 100 }).toFile(img("arquitectura.webp"));
 }
 
 // ---------- 3. QR con el logo UJAP al centro ----------
