@@ -1,6 +1,6 @@
 /**
  * Vigilante de la carpeta de Google Drive del inventario.
- * Cada 2 minutos calcula una "huella" de la carpeta (nombres, fechas, borrados) y, si cambió,
+ * Cada 5 minutos calcula una "huella" de la carpeta (nombres, fechas, borrados) y, si cambió,
  * pide a GitHub que publique el sitio (workflow "Publicar inventario").
  *
  * Instalación (una sola vez), en https://script.google.com con la cuenta dueña de la carpeta:
@@ -15,7 +15,7 @@
 
 function instalar() {
   ScriptApp.getProjectTriggers().forEach(function (t) { ScriptApp.deleteTrigger(t); });
-  ScriptApp.newTrigger("revisarCambios").timeBased().everyMinutes(2).create();
+  ScriptApp.newTrigger("revisarCambios").timeBased().everyMinutes(5).create();
   PropertiesService.getScriptProperties().deleteProperty("HUELLA");
   revisarCambios();
 }
