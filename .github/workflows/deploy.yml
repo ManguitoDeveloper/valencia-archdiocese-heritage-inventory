@@ -35,6 +35,8 @@ jobs:
 
       - name: Construir (QR, fichas, WebP, pre-renderizado)
         run: node build.mjs
+        env:
+          SITE_URL: ${{ vars.SITE_URL }}   # dirección pública del sitio (los QR apuntan aquí)
 
       - name: Publicar en Cloudflare
         run: npx --yes wrangler@4 deploy
