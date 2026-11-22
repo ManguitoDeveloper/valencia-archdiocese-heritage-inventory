@@ -123,7 +123,7 @@ const siteQR = await makeQR(SITE_URL + "/", "sitio.webp");
 // ---------- 4. Índice de documentos ----------
 // documentos/<Categoría>/[<Ubicación>/...]archivo.pdf
 // Las categorías fijas aparecen siempre en el filtro (aunque estén vacías), en este orden.
-const CATEGORIES = ["Vitrales", "Cuadros", "Muebles"];
+const CATEGORIES = ["Vitrales", "Cuadros", "Muebles", "Mosaicos", "Esculturas"];
 const docs = [];
 const usedIds = new Set();
 const srcOf = new Map();
@@ -177,7 +177,7 @@ const viewSource = await readFile("lib/catalog-view.cjs", "utf8");
 const inlineJSON = (v) => JSON.stringify(v).replaceAll("<", "\\u003c");   // evita cerrar la etiqueta <script>
 const prerender = {
   "{{FACTS}}": CatalogView.facts(docs, categories),
-  "{{COUNT}}": CatalogView.esc(CatalogView.count(docs)),
+  "{{COUNT}}": CatalogView.esc(CatalogView.count(docs, categories)),
   "{{CHIPS}}": CatalogView.chips(docs, categories, "Todas"),
   "{{RESULTS}}": CatalogView.results(docs, categories, "Todas", ""),
   "{{DATA}}": inlineJSON({ categorias: categories, documentos: docs }),

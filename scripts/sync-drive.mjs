@@ -1,5 +1,5 @@
 // Descarga la carpeta compartida de Google Drive en ./documentos (espejo exacto).
-//   Drive/Inventario/Vitrales|Cuadros|Muebles/[Ubicación/]archivo.pdf  →  documentos/…
+//   Drive/Inventario/Vitrales|Cuadros|Muebles|Mosaicos|Esculturas/[Ubicación/]archivo.pdf  →  documentos/…
 //
 // Variables de entorno:
 //   GOOGLE_SERVICE_ACCOUNT_JSON  contenido del JSON de la cuenta de servicio (lectura)
