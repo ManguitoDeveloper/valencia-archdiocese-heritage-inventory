@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Códigos QR · Inventario de Patrimonio Artístico</title>
+  <meta name="robots" content="noindex" />
+  <link rel="icon" type="image/webp" href="/img/favicon.webp" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Brygada+1918:wght@500;600&family=Schibsted+Grotesk:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --paper: oklch(0.972 0.009 80); --card: oklch(0.99 0.004 80); --ink: oklch(0.23 0.02 40);
+      --muted: oklch(0.52 0.018 55); --rule: oklch(0.86 0.018 75); --red: oklch(0.50 0.18 27); --gold-ink: oklch(0.50 0.09 72);
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--paper); color: var(--ink); font: 400 1rem/1.5 "Schibsted Grotesk", system-ui, sans-serif; }
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 32px clamp(16px, 4vw, 48px) 64px; }
+    header { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 16px; border-bottom: 1px solid var(--rule); padding-bottom: 16px; }
+    h1 { font: 600 clamp(1.5rem, 1.2rem + 1.2vw, 2rem)/1.15 "Brygada 1918", Georgia, serif; margin: 0; }
+    header p { margin: 4px 0 0; color: var(--muted); font-size: .9375rem; }
+    .tools { display: flex; gap: 8px; }
+    .tools a, .tools button { font: 600 .9375rem/1 inherit; font-family: inherit; padding: 12px 16px; border-radius: 4px; text-decoration: none; cursor: pointer; border: 1px solid var(--rule); background: var(--card); color: var(--ink); }
+    .tools button { background: var(--red); border-color: var(--red); color: var(--card); }
+    .sheet { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; margin-top: 24px; }
+    .label { margin: 0; background: var(--card); border: 1px solid var(--rule); border-radius: 4px; padding: 16px; break-inside: avoid; display: flex; flex-direction: column; gap: 10px; }
+    .label img { width: 100%; height: auto; aspect-ratio: 1; image-rendering: pixelated; }
+    .label figcaption { display: flex; flex-direction: column; gap: 2px; font-size: .8125rem; color: var(--muted); }
+    .label strong { font: 600 1rem/1.25 "Brygada 1918", Georgia, serif; color: var(--ink); }
+    .label .n { color: var(--gold-ink); font-weight: 600; letter-spacing: .12em; font-size: .6875rem; text-transform: uppercase; }
+    .label.site { border-color: var(--ink); }
+    @media print {
+      @page { margin: 12mm; }
+      body { background: #fff; }
+      .tools { display: none; }
+      .wrap { padding: 0; max-width: none; }
+      .sheet { grid-template-columns: repeat(3, 1fr); gap: 6mm; }
+      .label { border-color: #999; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <h1>Códigos QR del inventario</h1>
+        <p>Inventario de Patrimonio Artístico · Arquidiócesis de Valencia · Servicio Comunitario UJAP</p>
+      </div>
+      <div class="tools">
+        <a href="/">Volver al catálogo</a>
+        <button type="button" onclick="print()">Imprimir</button>
+      </div>
+    </header>
+    <div class="sheet">
+      <figure class="label site">
+        <img src="{{SITE_QR}}" alt="QR del inventario completo" width="300" height="300">
+        <figcaption><span class="n">Inventario completo</span><strong>Inventario de Patrimonio Artístico</strong><span class="c">{{SITE_URL}}</span></figcaption>
+      </figure>
+      {{QR_LABELS}}
+    </div>
+  </div>
+</body>
+</html>

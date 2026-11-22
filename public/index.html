@@ -1,0 +1,642 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Inventario de Patrimonio Artístico · Arquidiócesis de Valencia · UJAP</title>
+  <meta name="description" content="Inventario Académico de Patrimonio Artístico y Bienes Culturales Muebles de la Arquidiócesis de Valencia. Servicio Comunitario de la Universidad José Antonio Páez." />
+  <meta name="theme-color" content="#f6f2ea" />
+  <link rel="icon" type="image/webp" href="/img/favicon.webp" />
+  <link rel="canonical" href="{{SITE_URL}}/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="es_VE" />
+  <meta property="og:title" content="Inventario de Patrimonio Artístico · Arquidiócesis de Valencia" />
+  <meta property="og:description" content="Inventario académico de bienes culturales muebles. Servicio Comunitario UJAP." />
+  <meta property="og:url" content="{{SITE_URL}}/" />
+  <meta property="og:image" content="{{SITE_URL}}/img/og.webp" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Brygada+1918:ital,wght@0,400..700;1,400..700&family=Schibsted+Grotesk:wght@400..700&display=swap" rel="stylesheet" />
+  <link rel="preload" as="image" href="/img/portada-1400.webp" imagesrcset="/img/portada-800.webp 800w, /img/portada-1400.webp 1400w, /img/portada-2000.webp 2000w" imagesizes="100vw" />
+  <script>
+    (function () {
+      var skip = /[?&]d=/.test(location.search) || matchMedia("(prefers-reduced-motion: reduce)").matches;
+      document.documentElement.classList.add(skip ? "no-splash" : "splash-on");
+    })();
+  </script>
+  <style>
+    :root {
+      --paper: oklch(0.972 0.009 80);
+      --paper-2: oklch(0.945 0.014 78);
+      --card: oklch(0.99 0.004 80);
+      --ink: oklch(0.23 0.02 40);
+      --ink-2: oklch(0.40 0.02 45);
+      --muted: oklch(0.52 0.018 55);
+      --rule: oklch(0.86 0.018 75);
+      --rule-strong: oklch(0.74 0.03 75);
+      --red: oklch(0.50 0.18 27);
+      --red-hover: oklch(0.44 0.17 27);
+      --red-wash: oklch(0.94 0.03 27);
+      --gold: oklch(0.66 0.10 80);
+      --gold-ink: oklch(0.50 0.09 72);
+      --blue: oklch(0.47 0.14 262);
+
+      --serif: "Brygada 1918", "Iowan Old Style", Georgia, serif;
+      --sans: "Schibsted Grotesk", system-ui, sans-serif;
+
+      --space-2xs: 4px; --space-xs: 8px; --space-sm: 12px; --space-md: 16px;
+      --space-lg: 24px; --space-xl: 32px; --space-2xl: 48px; --space-3xl: 64px; --space-4xl: 96px;
+      --gutter: clamp(16px, 4vw, 48px);
+      --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; scroll-padding-top: 84px; scroll-behavior: smooth; }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+    body { margin: 0; background: var(--paper); color: var(--ink); font: 400 1rem/1.55 var(--sans); }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; }
+    :focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; border-radius: 2px; }
+    .wrap { max-width: 1180px; margin: 0 auto; padding: 0 var(--gutter); }
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+    .smallcaps { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; }
+
+    /* ---------- Masthead ---------- */
+    .masthead { position: sticky; top: 0; z-index: 5; background: var(--paper); border-bottom: 1px solid var(--rule); }
+    .masthead.scrolled { box-shadow: 0 1px 0 var(--rule), 0 6px 20px oklch(0.2 0.02 40 / .06); }
+    .masthead .wrap { display: flex; align-items: center; gap: var(--space-md); padding-block: var(--space-sm); }
+    .seal { display: flex; align-items: center; gap: var(--space-sm); text-decoration: none; min-width: 0; }
+    .seal img { width: 44px; height: auto; mix-blend-mode: multiply; }
+    .seal .arq { height: 40px; width: auto; }
+    .seal-text { line-height: 1.25; min-width: 0; }
+    .seal-text strong { display: block; font-weight: 600; font-size: 0.9375rem; }
+    .seal-text span { display: block; color: var(--muted); font-size: 0.8125rem; }
+    .masthead .tag { margin-left: auto; color: var(--gold-ink); white-space: nowrap; }
+
+    /* ---------- Hero (foto a pantalla completa con el título encima) ---------- */
+    .hero { --on-photo: oklch(0.98 0.005 80); --on-photo-2: oklch(0.90 0.012 80); --on-photo-accent: oklch(0.84 0.10 45);
+      position: relative; isolation: isolate; overflow: hidden; display: grid; align-items: end;
+      height: calc(100dvh - var(--header-h, 69px)); min-height: 520px; background: oklch(0.22 0.02 40); color: var(--on-photo); }
+    .hero-photo { position: absolute; inset: 0; z-index: -1; margin: 0; }
+    .hero-photo img { width: 100%; height: 100%; object-fit: cover; }
+    /* Velo en U (abajo y esquinas inferiores): difumina y oscurece los bordes para disimular defectos del escalado */
+    .hero-veil { position: absolute; inset: 0; pointer-events: none;
+      -webkit-backdrop-filter: blur(14px) saturate(.85); backdrop-filter: blur(14px) saturate(.85);
+      -webkit-mask-image: linear-gradient(to top, #000 0%, rgb(0 0 0 / .6) 14%, transparent 36%), radial-gradient(ellipse 38% 62% at 0% 100%, #000 0%, rgb(0 0 0 / .4) 45%, transparent 100%), radial-gradient(ellipse 45% 68% at 100% 100%, #000 10%, rgb(0 0 0 / .5) 50%, transparent 100%);
+              mask-image: linear-gradient(to top, #000 0%, rgb(0 0 0 / .6) 14%, transparent 36%), radial-gradient(ellipse 38% 62% at 0% 100%, #000 0%, rgb(0 0 0 / .4) 45%, transparent 100%), radial-gradient(ellipse 45% 68% at 100% 100%, #000 10%, rgb(0 0 0 / .5) 50%, transparent 100%); }
+    .hero-photo::after { content: ""; position: absolute; inset: 0; pointer-events: none; background:
+      linear-gradient(to top, oklch(0.14 0.02 40 / .9) 0%, oklch(0.15 0.02 40 / .58) 24%, oklch(0.16 0.02 40 / .22) 44%, oklch(0.16 0.02 40 / 0) 62%),
+      radial-gradient(ellipse 55% 72% at 0% 100%, oklch(0.14 0.02 40 / .55) 0%, oklch(0.15 0.02 40 / .25) 45%, oklch(0.16 0.02 40 / 0) 100%),
+      radial-gradient(ellipse 45% 68% at 100% 100%, oklch(0.14 0.02 40 / .6) 0%, oklch(0.15 0.02 40 / .25) 45%, oklch(0.16 0.02 40 / 0) 100%),
+      linear-gradient(oklch(0.16 0.02 40 / .2), oklch(0.16 0.02 40 / .2)); }
+    .hero-credit { position: absolute; z-index: 1; top: var(--space-sm); right: var(--gutter); max-width: calc(100% - 2 * var(--gutter)); text-align: right;
+      font-size: 0.75rem; color: oklch(0.98 0 0 / .88); text-shadow: 0 1px 2px oklch(0 0 0 / .6); }
+    .hero-credit a { color: inherit; }
+    a.ig { display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; vertical-align: bottom; }
+    a.ig svg { width: 14px; height: 14px; flex: none; }
+    .hero-text { width: 100%; padding-block: var(--space-4xl) clamp(var(--space-xl), 5vw, var(--space-3xl)); }
+    .hero-text > * { max-width: 900px; }
+    .kicker { color: var(--gold-ink); margin: 0 0 var(--space-md); display: flex; align-items: center; gap: var(--space-sm); }
+    .kicker::before { content: ""; width: 32px; height: 1px; background: var(--gold); }
+    .hero .kicker { color: oklch(0.86 0.08 80); }
+    .hero .kicker::before { background: oklch(0.86 0.08 80); }
+    h1 { font-family: var(--serif); font-weight: 600; font-size: clamp(2.25rem, 1.2rem + 4vw, 4.75rem); line-height: 1.02; letter-spacing: -0.015em; margin: 0; text-wrap: balance; }
+    h1 em { display: block; font-style: italic; font-weight: 500; color: var(--red); margin-top: 0.12em; }
+    .hero h1 { color: var(--on-photo); text-shadow: 0 2px 24px oklch(0.1 0.02 40 / .5); }
+    .hero h1 em { color: var(--on-photo-accent); }
+    .lede { max-width: 54ch !important; color: var(--on-photo-2); font-size: 1.0625rem; line-height: 1.6; margin: var(--space-lg) 0 0; text-wrap: pretty; }
+    .facts { display: flex; flex-wrap: wrap; gap: var(--space-xs) var(--space-xl); margin: var(--space-xl) 0 0; padding: 0; list-style: none; }
+    .facts li { display: flex; align-items: baseline; gap: var(--space-xs); color: var(--on-photo-2); font-size: 0.9375rem; }
+    .facts b { font-family: var(--serif); font-size: 2rem; font-weight: 600; color: var(--on-photo); font-variant-numeric: lining-nums; }
+    .hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-lg); margin-top: var(--space-xl); }
+    .btn { display: inline-flex; align-items: center; gap: var(--space-xs); font: 600 0.9375rem/1 var(--sans); padding: 14px 20px; border-radius: 4px; border: 1px solid transparent; text-decoration: none; cursor: pointer; transition: background-color .2s var(--ease-out), color .2s, border-color .2s; }
+    .btn-primary { background: var(--red); color: var(--card); }
+    .btn-primary:hover { background: var(--red-hover); }
+    .btn svg { width: 18px; height: 18px; }
+
+    .share { display: flex; align-items: center; gap: var(--space-md); }
+    .share button { padding: 0; border: 1px solid transparent; background: var(--card); border-radius: 4px; cursor: zoom-in; transition: transform .2s var(--ease-out); }
+    .share button:hover { transform: scale(1.04); }
+    .share img { width: 76px; height: 76px; padding: 4px; }
+    .share p { margin: 0; font-size: 0.875rem; color: var(--on-photo-2); line-height: 1.4; }
+    .share p strong { display: block; color: var(--on-photo); font-weight: 600; }
+    .share a { color: var(--on-photo); text-underline-offset: 3px; }
+    .hero :focus-visible { outline-color: var(--on-photo); }
+
+    /* ---------- Catálogo ---------- */
+    .catalog { background: var(--card); border-top: 1px solid var(--rule); padding-block: var(--space-3xl) var(--space-4xl); }
+    .catalog-head { display: grid; grid-template-columns: 1fr minmax(260px, 380px); gap: var(--space-lg); align-items: end; }
+    h2 { font-family: var(--serif); font-weight: 600; font-size: clamp(1.75rem, 1.3rem + 1.6vw, 2.5rem); line-height: 1.1; margin: 0; }
+    h2 small { display: block; font-family: var(--sans); color: var(--muted); font-size: 0.9375rem; font-weight: 400; margin-top: var(--space-xs); }
+    .search { position: relative; }
+    .search svg { position: absolute; left: 14px; top: 50%; width: 18px; height: 18px; translate: 0 -50%; color: var(--muted); pointer-events: none; }
+    .search input { width: 100%; font: inherit; color: var(--ink); padding: 12px 14px 12px 42px; background: var(--paper); border: 1px solid var(--rule); border-radius: 4px; transition: border-color .2s, background-color .2s; }
+    .search input::placeholder { color: var(--muted); }
+    .search input:focus { outline: none; border-color: var(--ink-2); background: var(--card); }
+    .chips { display: flex; flex-wrap: wrap; gap: var(--space-xs); margin-top: var(--space-lg); }
+    .chip { font: 500 0.875rem/1 var(--sans); padding: 9px 14px; border-radius: 999px; border: 1px solid var(--rule); background: transparent; color: var(--ink-2); cursor: pointer; transition: border-color .2s, background-color .2s, color .2s; }
+    .chip:hover { border-color: var(--rule-strong); }
+    .chip[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--card); }
+    .chip-n { margin-left: 8px; font-variant-numeric: tabular-nums; color: var(--muted); }
+    .chip[aria-pressed="true"] .chip-n { color: oklch(0.80 0.02 60); }
+
+    .group { margin-top: var(--space-2xl); }
+    .group-head { display: flex; align-items: baseline; gap: var(--space-sm); padding-bottom: var(--space-sm); border-bottom: 1px solid var(--rule-strong); }
+    .group-head .roman { font-family: var(--serif); font-style: italic; color: var(--gold-ink); font-size: 1.125rem; min-width: 2.5ch; }
+    .group-head h3 { margin: 0; font-family: var(--serif); font-weight: 600; font-size: 1.375rem; line-height: 1.2; }
+    .group-head .count { margin-left: auto; color: var(--muted); font-size: 0.875rem; white-space: nowrap; }
+
+    .ledger { list-style: none; margin: 0; padding: 0; }
+    .row { position: relative; display: grid; grid-template-columns: 4.5rem minmax(0, 1fr) auto; align-items: center; gap: var(--space-md); padding: var(--space-md) var(--space-sm); border-bottom: 1px solid var(--rule); transition: background-color .2s var(--ease-out); }
+    .row:hover { background: var(--paper); }
+    .row .n { font-family: var(--serif); color: var(--gold-ink); font-variant-numeric: tabular-nums lining-nums; font-size: 0.9375rem; }
+    .row .t { font-family: var(--serif); font-size: 1.1875rem; font-weight: 500; line-height: 1.3; text-decoration: none; overflow-wrap: anywhere; }
+    .row .t::after { content: ""; position: absolute; inset: 0; }
+    .row:hover .t { color: var(--red); }
+    .row .meta { color: var(--muted); font-size: 0.8125rem; margin-top: 2px; }
+    .acts { position: relative; z-index: 1; display: flex; gap: var(--space-2xs); }
+    .icon-btn { display: inline-grid; place-items: center; width: 40px; height: 40px; border-radius: 4px; border: 1px solid transparent; background: transparent; color: var(--ink-2); cursor: pointer; text-decoration: none; transition: border-color .2s, color .2s, background-color .2s; }
+    .icon-btn:hover { border-color: var(--rule-strong); color: var(--ink); background: var(--card); }
+    .icon-btn svg { width: 20px; height: 20px; }
+
+    .empty { padding: var(--space-3xl) 0; max-width: 46ch; }
+    .empty p { margin: 0 0 var(--space-md); color: var(--ink-2); }
+    .empty .serif { font-family: var(--serif); font-size: 1.375rem; color: var(--ink); }
+    .linkish { font: inherit; color: var(--red); background: none; border: 0; padding: 0; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+
+    /* ---------- Pie ---------- */
+    footer { border-top: 1px solid var(--rule); padding-block: var(--space-2xl); font-size: 0.875rem; color: var(--muted); }
+    footer .wrap { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: var(--space-xl); }
+    footer strong { display: block; color: var(--ink); font-weight: 600; margin-bottom: var(--space-2xs); }
+    footer p { margin: 0; }
+    .foot-logos { display: flex; align-items: center; gap: var(--space-lg); margin-bottom: var(--space-md); }
+    .foot-logos img { height: 60px; width: auto; mix-blend-mode: multiply; }
+    footer a { color: var(--ink-2); text-underline-offset: 3px; }
+
+    /* ---------- QR (diálogo) ---------- */
+    dialog.qr { border: 0; padding: 0; border-radius: 6px; background: var(--card); color: var(--ink); width: min(360px, calc(100vw - 32px)); box-shadow: 0 24px 64px oklch(0.2 0.02 40 / .25); }
+    dialog.qr::backdrop { background: oklch(0.2 0.02 40 / .45); }
+    dialog.qr[open] { animation: rise .35s var(--ease-out); }
+    .qr-body { padding: var(--space-lg); text-align: center; }
+    .qr-body img { width: 100%; height: auto; aspect-ratio: 1; image-rendering: pixelated; }
+    .qr-body .n { color: var(--gold-ink); margin-top: var(--space-md); }
+    .qr-body h4 { font-family: var(--serif); font-weight: 600; font-size: 1.25rem; line-height: 1.25; margin: var(--space-2xs) 0 var(--space-lg); }
+    .qr-actions { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-xs); }
+    .btn-ghost { justify-content: center; background: transparent; border-color: var(--rule-strong); color: var(--ink); padding: 12px; }
+    .btn-ghost:hover { background: var(--paper); }
+    .qr-close { position: absolute; top: 8px; right: 8px; }
+
+    /* ---------- Visor PDF ---------- */
+    body.locked { overflow: hidden; }
+    .viewer { position: fixed; inset: 0; z-index: 10; display: flex; flex-direction: column; background: oklch(0.90 0.012 75); }
+    .viewer[hidden] { display: none; }
+    .vbar { flex: none; display: flex; align-items: center; gap: var(--space-2xs); padding: var(--space-xs) var(--space-sm); background: var(--card); border-bottom: 1px solid var(--rule); }
+    .vtitle { flex: 1; min-width: 0; padding: 0 var(--space-xs); line-height: 1.2; }
+    .vtitle strong { display: block; font-family: var(--serif); font-weight: 600; font-size: 1.0625rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .vtitle span { font-size: 0.75rem; color: var(--muted); }
+    .vsep { width: 1px; height: 24px; background: var(--rule); margin: 0 var(--space-2xs); }
+    .viewer .icon-btn:disabled { opacity: .35; cursor: default; background: transparent; border-color: transparent; }
+    .vpages { flex: 1; overflow: auto; scrollbar-gutter: stable; padding: var(--space-md); display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-sm); }
+    .vpage { position: relative; flex: none; margin-inline: auto; background: oklch(0.995 0.002 80); box-shadow: 0 1px 3px oklch(0.2 0.02 40 / .18), 0 8px 24px oklch(0.2 0.02 40 / .08); }
+    .vpage canvas { display: block; width: 100%; height: 100%; }
+    /* Capa de texto de PDF.js: texto invisible encima del dibujo, para seleccionar, copiar y buscar */
+    .textLayer { position: absolute; inset: 0; overflow: hidden; line-height: 1; text-size-adjust: none; -webkit-text-size-adjust: none; forced-color-adjust: none; transform-origin: 0 0; z-index: 2; }
+    .textLayer :is(span, br) { color: transparent; position: absolute; white-space: pre; cursor: text; transform-origin: 0% 0%; }
+    .textLayer ::selection { background: oklch(0.55 0.15 260 / .3); color: transparent; }
+    .textLayer .endOfContent { display: block; position: absolute; inset: 100% 0 0; z-index: -1; cursor: default; user-select: none; }
+    .textLayer .endOfContent.active { top: 0; }
+    .vmsg { margin: auto; color: var(--ink-2); text-align: center; padding: var(--space-lg); }
+    .vmsg .btn { margin-top: var(--space-md); }
+
+    /* ---------- Pantalla de bienvenida ---------- */
+    html { scrollbar-gutter: stable; }   /* sin salto de ancho al aparecer la barra de desplazamiento */
+    .splash { position: fixed; inset: 0; z-index: 50; cursor: pointer; }
+    .no-splash .splash { display: none; }
+    .splash-bg { position: absolute; inset: 0; background: var(--paper); transform-origin: top; }
+    .splash-line { position: absolute; left: 0; right: 0; top: 0; height: 1px; background: var(--rule); opacity: 0; }
+    .splash-content { position: absolute; inset: 0; display: grid; place-items: center; align-content: center; gap: var(--space-lg); text-align: center; padding: var(--gutter); }
+    .splash-logos { display: flex; align-items: center; gap: clamp(24px, 6vw, 56px); margin-bottom: var(--space-sm); }
+    .splash-ujap { width: clamp(84px, 18vw, 128px); height: auto; mix-blend-mode: multiply; animation: splash-in .7s var(--ease-out) .1s both; }
+    .splash-rule { width: 1px; align-self: stretch; background: var(--rule-strong); transform-origin: top; animation: splash-grow .6s var(--ease-out) .35s both; }
+    .splash-arq { width: clamp(96px, 20vw, 140px); height: auto; overflow: visible; }
+    .arq-fill { fill: var(--ink); opacity: 0; animation: splash-fade .5s var(--ease-out) 1.55s forwards; }
+    .arq-line { fill: none; stroke: var(--ink); stroke-width: 4; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 1;
+      animation: splash-draw 1.1s cubic-bezier(.65, 0, .35, 1) calc(.45s + var(--k) * 70ms) forwards, splash-fade-out .4s ease 1.9s forwards; }
+    .splash-names { display: grid; justify-items: center; gap: 2px; line-height: 1.25; }
+    .splash-names > * { display: inline-block; white-space: nowrap; }
+    .splash-name { font-weight: 600; font-size: clamp(1.25rem, 1rem + 1.4vw, 1.75rem); color: var(--ink); animation: splash-in .6s var(--ease-out) 1.1s both; }
+    .splash-school { font-size: clamp(1rem, .85rem + .9vw, 1.375rem); color: var(--muted); animation: splash-in .6s var(--ease-out) 1.22s both; }
+    .splash-tag { display: inline-block; white-space: nowrap; color: var(--gold-ink); font-size: clamp(.8125rem, .7rem + .5vw, 1rem); animation: splash-in .6s var(--ease-out) 1.4s both; }
+    @keyframes splash-in { from { opacity: 0; transform: translateY(8px) scale(.96); } to { opacity: 1; transform: none; } }
+    @keyframes splash-grow { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+    @keyframes splash-draw { to { stroke-dashoffset: 0; } }
+    @keyframes splash-fade { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes splash-fade-out { to { opacity: 0; } }
+    .splash-on body { overflow: hidden; }
+    .splash-on.splash-done body { overflow: auto; }
+    .splash-on:not(.splash-done) .reveal { animation-play-state: paused; }
+    .splash-on:not(.splash-landed) .masthead .wrap > * { visibility: hidden; }
+
+    /* ---------- Movimiento ---------- */
+    @keyframes rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+    .reveal { animation: rise .8s var(--ease-out) both; animation-delay: calc(var(--i, 0) * 90ms); }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 1ms !important; animation-delay: 0ms !important; transition-duration: 1ms !important; }
+    }
+
+    /* ---------- Responsive ---------- */
+    @media (max-width: 900px) {
+      .catalog-head { grid-template-columns: 1fr; }
+      footer .wrap { grid-template-columns: 1fr; gap: var(--space-lg); }
+    }
+    @media (max-width: 600px) {
+      .masthead .tag { display: none; }
+      .hero-text { padding-top: var(--space-3xl); }
+      .hero-photo::after { background:
+        linear-gradient(to top, oklch(0.14 0.02 40 / .92) 0%, oklch(0.15 0.02 40 / .7) 45%, oklch(0.16 0.02 40 / .3) 72%, oklch(0.16 0.02 40 / .1) 100%),
+        radial-gradient(ellipse 60% 50% at 0% 100%, oklch(0.14 0.02 40 / .4) 0%, oklch(0.16 0.02 40 / 0) 100%),
+        radial-gradient(ellipse 60% 50% at 100% 100%, oklch(0.14 0.02 40 / .4) 0%, oklch(0.16 0.02 40 / 0) 100%); }
+      .facts b { font-size: 1.625rem; }
+      .row { grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-xs) var(--space-sm); padding-inline: 0; }
+      .row .n { grid-column: 1 / -1; font-size: 0.8125rem; margin-bottom: -6px; }
+      .row .t { font-size: 1.0625rem; }
+      .acts .hide-sm { display: none; }
+      .viewer .hide-sm { display: none; }
+      .vpages { padding: var(--space-xs); gap: var(--space-xs); }
+    }
+    @media print {
+      .masthead, .hero, .search, .chips, .acts, footer, .viewer { display: none !important; }
+      .catalog { border: 0; padding: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="splash" id="splash" aria-hidden="true">
+    <div class="splash-bg"></div>
+    <div class="splash-line"></div>
+    <div class="splash-content">
+      <div class="splash-logos">
+        <img class="splash-ujap" src="/img/ujap-logo.webp" alt="" width="128" height="142" />
+        <!--ARQ--><span class="splash-rule"></span>
+        {{ARQ_SVG}}<!--/ARQ-->
+      </div>
+      <div class="splash-names">
+        <span class="splash-name">Universidad José Antonio Páez</span>
+        <span class="splash-school">Escuela de Arquitectura</span>
+      </div>
+      <span class="splash-tag smallcaps">Servicio Comunitario</span>
+    </div>
+  </div>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="i-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></symbol>
+    <symbol id="i-qr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM20 14v.01M14 20h.01M17 20h4v-3"/></symbol>
+    <symbol id="i-dl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 19h14"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-minus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M5 12h14"/></symbol>
+    <symbol id="i-fit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h18M7 8l-4 4 4 4M17 8l4 4-4 4"/></symbol>
+    <symbol id="i-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/></symbol>
+    <symbol id="i-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14m0 0-6-6m6 6 6-6"/></symbol>
+  </svg>
+
+  <header class="masthead">
+    <div class="wrap">
+      <a class="seal" href="/">
+        <img src="/img/ujap-logo.webp" width="44" height="49" alt="Escudo de la Universidad José Antonio Páez" />
+        <!--ARQ--><img class="arq" src="/img/arquitectura.webp" alt="Logo de la Escuela de Arquitectura UJAP" /><!--/ARQ-->
+        <span class="seal-text">
+          <strong>Universidad José Antonio Páez</strong>
+          <span>Escuela de Arquitectura</span>
+        </span>
+      </a>
+      <span class="tag smallcaps">Servicio Comunitario</span>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <figure class="hero-photo">
+        <img src="/img/portada-1400.webp" srcset="/img/portada-800.webp 800w, /img/portada-1400.webp 1400w, /img/portada-2000.webp 2000w" sizes="100vw" width="2000" height="1500" fetchpriority="high" alt="{{HERO_ALT}}" style="object-position: {{HERO_POS}}" />
+        <span class="hero-veil" aria-hidden="true"></span>
+        <figcaption class="hero-credit"><span>{{HERO_CAPTION}}</span> · <span>{{HERO_CREDIT}}</span></figcaption>
+      </figure>
+      <div class="wrap hero-text">
+        <p class="kicker smallcaps reveal" style="--i:0">Inventario académico</p>
+        <h1 class="reveal" style="--i:1">Patrimonio artístico y bienes culturales muebles <em>de la Arquidiócesis de Valencia</em></h1>
+        <p class="lede reveal" style="--i:2">Registro documental de las obras de arte y los bienes muebles de los templos de la Arquidiócesis, elaborado en el marco del Servicio Comunitario de la UJAP.</p>
+        <ul class="facts reveal" style="--i:3" id="facts">{{FACTS}}</ul>
+        <div class="hero-actions reveal" style="--i:4">
+          <a class="btn btn-primary" href="#catalogo">Consultar el catálogo <svg aria-hidden="true"><use href="#i-down"/></svg></a>
+          <div class="share">
+            <button type="button" id="site-qr" aria-label="Ver el código QR del inventario">
+              <img src="{{SITE_QR}}" alt="" width="76" height="76" />
+            </button>
+            <p><strong>Código QR del sitio</strong><a href="{{SITE_QR}}" download="QR-inventario-patrimonio.webp">Descargar</a> · <a href="/qr.html">Hoja para imprimir</a></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="catalog" id="catalogo" aria-labelledby="catalog-title">
+      <div class="wrap">
+        <div class="catalog-head">
+          <h2 id="catalog-title">Catálogo de documentos<small id="count">{{COUNT}}</small></h2>
+          <label class="search">
+            <span class="sr-only">Buscar en el catálogo</span>
+            <svg aria-hidden="true"><use href="#i-search"/></svg>
+            <input id="q" type="search" placeholder="Buscar por título, tipo o ubicación" autocomplete="off" />
+          </label>
+        </div>
+        <div class="chips" id="chips" role="group" aria-label="Filtrar por tipo de bien">{{CHIPS}}</div>
+        <div id="results" aria-live="polite">{{RESULTS}}</div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <div>
+        <div class="foot-logos">
+          <img src="/img/ujap-logo.webp" alt="Universidad José Antonio Páez" width="54" height="60" loading="lazy" />
+          <!--ARQ--><img src="/img/arquitectura-completo.webp" alt="Escuela de Arquitectura UJAP" width="70" height="60" loading="lazy" /><!--/ARQ-->
+        </div>
+        <strong>Inventario Académico de Patrimonio Artístico y Bienes Culturales Muebles de la Arquidiócesis de Valencia</strong>
+        <p>Servicio Comunitario · Universidad José Antonio Páez · Escuela de Arquitectura</p>
+      </div>
+      <div>
+        <strong>Códigos QR</strong>
+        <p>Cada documento tiene su propio código. <a href="/qr.html">Imprimir todos</a></p>
+      </div>
+      <div>
+        <strong>Créditos</strong>
+        <p>{{HERO_CAPTION}}. {{HERO_CREDIT}}.</p>
+      </div>
+    </div>
+  </footer>
+
+  <dialog class="qr" id="qrdlg" aria-labelledby="qr-title">
+    <form method="dialog"><button class="icon-btn qr-close" aria-label="Cerrar"><svg><use href="#i-x"/></svg></button></form>
+    <div class="qr-body">
+      <img id="qr-img" alt="" width="300" height="300" />
+      <div class="n smallcaps" id="qr-n"></div>
+      <h4 id="qr-title"></h4>
+      <div class="qr-actions">
+        <a class="btn btn-ghost" id="qr-dl" download>Descargar QR</a>
+        <button class="btn btn-ghost" id="qr-copy" type="button">Copiar enlace</button>
+      </div>
+    </div>
+  </dialog>
+
+  <div class="viewer" id="viewer" hidden role="dialog" aria-modal="true" aria-labelledby="vtitle">
+    <div class="vbar">
+      <button class="icon-btn" id="vclose" aria-label="Cerrar" title="Cerrar (Esc)"><svg><use href="#i-x"/></svg></button>
+      <div class="vtitle"><strong id="vtitle"></strong><span id="vinfo"></span></div>
+      <button class="icon-btn" id="vzoomout" aria-label="Alejar" title="Alejar"><svg><use href="#i-minus"/></svg></button>
+      <button class="icon-btn hide-sm" id="vzoomfit" aria-label="Ajustar al ancho" title="Ajustar al ancho"><svg><use href="#i-fit"/></svg></button>
+      <button class="icon-btn" id="vzoomin" aria-label="Acercar" title="Acercar"><svg><use href="#i-plus"/></svg></button>
+      <span class="vsep hide-sm"></span>
+      <button class="icon-btn" id="vqr" aria-label="Código QR" title="Código QR"><svg><use href="#i-qr"/></svg></button>
+      <a class="icon-btn hide-sm" id="vnew" target="_blank" rel="noopener" aria-label="Abrir en pestaña nueva" title="Abrir en pestaña nueva"><svg><use href="#i-ext"/></svg></a>
+      <a class="icon-btn" id="vdl" download aria-label="Descargar PDF" title="Descargar PDF"><svg><use href="#i-dl"/></svg></a>
+    </div>
+    <div class="vpages" id="vpages"></div>
+  </div>
+
+  <script type="application/json" id="catalog-data">{{DATA}}</script>
+  <script>{{CATALOG_VIEW}}</script>
+  <script>
+    const SITE_URL = "{{SITE_URL}}";
+    const SITE_QR = "{{SITE_QR}}";
+    const $ = (s) => document.querySelector(s);
+    const { esc, num, plural } = CatalogView;
+
+    // Datos incrustados en la página (sin petición extra); la lista ya viene pre-renderizada
+    const data = JSON.parse($("#catalog-data").textContent);
+    const docs = data.documentos, cats = data.categorias, byId = new Map(docs.map((d) => [d.id, d]));
+    let active = "Todas";
+
+    // ---------- Catálogo (solo se vuelve a dibujar al buscar o filtrar) ----------
+    const render = () => { $("#results").innerHTML = CatalogView.results(docs, cats, active, $("#q").value); };
+    const renderChips = () => { $("#chips").innerHTML = CatalogView.chips(docs, cats, active); };
+
+    $("#chips").addEventListener("click", (e) => {
+      const c = e.target.closest(".chip")?.dataset.c; if (!c) return;
+      active = c; renderChips(); render();
+    });
+    $("#q").addEventListener("input", render);
+
+    $("#results").addEventListener("click", (e) => {
+      if (e.target.closest("[data-clear]")) { $("#q").value = ""; active = "Todas"; renderChips(); render(); return; }
+      const qrBtn = e.target.closest("[data-qr]");
+      if (qrBtn) { const d = byId.get(qrBtn.dataset.qr); showQR(d.qr, num(d.n), d.title, d.link, d.id); return; }
+      const a = e.target.closest("a.t");
+      if (!a || e.ctrlKey || e.metaKey || e.shiftKey || e.button !== 0) return;
+      e.preventDefault();
+      openViewer(byId.get(a.dataset.id));
+    });
+
+    // ---------- QR ----------
+    function showQR(src, label, title, link, id) {
+      $("#qr-img").src = src;
+      $("#qr-img").alt = `Código QR: ${title}`;
+      $("#qr-n").textContent = label;
+      $("#qr-title").textContent = title;
+      $("#qr-dl").href = src;
+      $("#qr-dl").download = `QR-${id}.webp`;
+      $("#qr-copy").textContent = "Copiar enlace";
+      $("#qr-copy").onclick = async () => {
+        try { await navigator.clipboard.writeText(link); $("#qr-copy").textContent = "Enlace copiado"; }
+        catch { $("#qr-copy").textContent = link; }
+      };
+      $("#qrdlg").showModal();
+    }
+    $("#site-qr").onclick = () => showQR(SITE_QR, "Inventario completo", "Inventario de Patrimonio Artístico", SITE_URL + "/", "inventario-patrimonio");
+    $("#qrdlg").addEventListener("click", (e) => { if (e.target === e.currentTarget) e.currentTarget.close(); });
+
+    // ---------- Visor de PDF (PDF.js) ----------
+    const PDFJS = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/";
+    let pdfjsReady = null, pdf = null, loadTask = null, zoom = 1, observer = null, session = 0, current = null;
+
+    function loadPdfjs() {
+      return pdfjsReady ??= new Promise((ok, fail) => {
+        const s = document.createElement("script");
+        s.src = PDFJS + "pdf.min.js";
+        s.onload = () => { pdfjsLib.GlobalWorkerOptions.workerSrc = PDFJS + "pdf.worker.min.js"; ok(); };
+        s.onerror = () => { pdfjsReady = null; s.remove(); fail(); };
+        document.head.appendChild(s);
+      });
+    }
+
+    async function openViewer(d, push = true) {
+      const my = ++session;
+      current = d;
+      $("#vtitle").textContent = d.title;
+      $("#vinfo").textContent = `${num(d.n)} · ${d.category}`;
+      $("#vnew").href = $("#vdl").href = d.url;
+      $("#vpages").innerHTML = `<p class="vmsg">Cargando documento…</p>`;
+      $("#viewer").hidden = false;
+      document.body.classList.add("locked");
+      $("#vclose").focus();
+      document.title = `${d.title} · Inventario de Patrimonio Artístico`;
+      if (push) history.pushState({ doc: d.id }, "", "?d=" + d.id);
+      try {
+        await loadPdfjs();
+        if (my !== session) return;
+        loadTask = pdfjsLib.getDocument(d.url);
+        const doc = await loadTask.promise;
+        if (my !== session) return doc.destroy();
+        pdf = doc; zoom = 1;
+        $("#vinfo").textContent = `${num(d.n)} · ${d.category} · ${plural(pdf.numPages, "página", "páginas")}`;
+        await layoutPages();
+      } catch (e) {
+        if (my !== session) return;
+        console.error(e);
+        $("#vpages").innerHTML = `<div class="vmsg"><p>No se pudo mostrar el documento aquí.</p>
+          <a class="btn btn-primary" href="${d.url}" target="_blank" rel="noopener">Abrir el PDF</a></div>`;
+      }
+    }
+
+    async function layoutPages() {
+      const box = $("#vpages"), doc = pdf;
+      const ratio = box.scrollHeight ? box.scrollTop / box.scrollHeight : 0;
+      const first = await doc.getPage(1);
+      if (doc !== pdf) return;
+      observer?.disconnect();
+      box.innerHTML = "";
+      const base = first.getViewport({ scale: 1 });
+      const avail = box.clientWidth - (innerWidth <= 600 ? 16 : 32);
+      const scale = Math.min(avail / base.width, 1.6) * zoom;
+
+      observer = new IntersectionObserver((entries) => {
+        for (const en of entries) if (en.isIntersecting) { observer.unobserve(en.target); drawPage(en.target, scale, doc); }
+      }, { root: box, rootMargin: "800px 0px" });
+
+      for (let n = 1; n <= doc.numPages; n++) {
+        const el = document.createElement("div");
+        el.className = "vpage"; el.dataset.n = n;
+        el.style.width = base.width * scale + "px";
+        el.style.height = base.height * scale + "px";
+        box.appendChild(el);
+        observer.observe(el);
+      }
+      box.scrollTop = ratio * box.scrollHeight;
+      $("#vzoomout").disabled = zoom <= 0.5;
+      $("#vzoomin").disabled = zoom >= 3;
+    }
+
+    async function drawPage(el, scale, doc) {
+      const page = await doc.getPage(+el.dataset.n);
+      if (doc !== pdf) return;
+      const vp = page.getViewport({ scale });
+      const dpr = Math.min(devicePixelRatio || 1, 2);
+      const canvas = document.createElement("canvas");
+      canvas.width = Math.floor(vp.width * dpr);
+      canvas.height = Math.floor(vp.height * dpr);
+      el.style.width = vp.width + "px"; el.style.height = vp.height + "px";
+      await page.render({ canvasContext: canvas.getContext("2d"), viewport: vp, transform: dpr !== 1 ? [dpr, 0, 0, dpr, 0, 0] : null }).promise;
+      if (doc !== pdf) return;
+      el.replaceChildren(canvas);
+      // Texto seleccionable
+      const layer = document.createElement("div");
+      layer.className = "textLayer";
+      layer.style.setProperty("--scale-factor", vp.scale);
+      el.appendChild(layer);
+      try {
+        await pdfjsLib.renderTextLayer({ textContentSource: page.streamTextContent(), container: layer, viewport: vp, textDivs: [] }).promise;
+      } catch (e) { layer.remove(); }
+    }
+
+    function closeViewer(fromPop = false) {
+      if ($("#viewer").hidden) return;
+      session++;
+      observer?.disconnect();
+      loadTask?.destroy(); loadTask = null; pdf = null; current = null;
+      $("#vpages").innerHTML = "";
+      $("#viewer").hidden = true;
+      document.body.classList.remove("locked");
+      document.title = BASE_TITLE;
+      if (!fromPop && history.state?.doc) history.back();
+    }
+
+    const BASE_TITLE = document.title;
+    const setZoom = (z) => { if (!pdf) return; zoom = Math.min(3, Math.max(0.5, z)); layoutPages(); };
+    $("#vzoomin").onclick = () => setZoom(zoom * 1.25);
+    $("#vzoomout").onclick = () => setZoom(zoom / 1.25);
+    $("#vzoomfit").onclick = () => setZoom(1);
+    $("#vclose").onclick = () => closeViewer();
+    $("#vqr").onclick = () => current && showQR(current.qr, num(current.n), current.title, current.link, current.id);
+    addEventListener("keydown", (e) => {
+      if ($("#viewer").hidden || $("#qrdlg").open) return;
+      if (e.key === "Escape") closeViewer();
+      if ((e.ctrlKey || e.metaKey) && (e.key === "+" || e.key === "=")) { e.preventDefault(); setZoom(zoom * 1.25); }
+      if ((e.ctrlKey || e.metaKey) && e.key === "-") { e.preventDefault(); setZoom(zoom / 1.25); }
+    });
+    let resizeT; addEventListener("resize", () => { clearTimeout(resizeT); resizeT = setTimeout(() => pdf && layoutPages(), 200); });
+
+    addEventListener("popstate", (e) => {
+      const d = e.state?.doc && byId.get(e.state.doc);
+      if (d) openViewer(d, false); else closeViewer(true);
+    });
+
+    // ---------- Pantalla de bienvenida: se convierte en la cabecera ----------
+    // Cada elemento viaja (traslada + escala) a su gemelo en la cabecera; el fondo se encoge hasta
+    // la altura de la cabecera y aparece su línea inferior. Al llegar, se cambia por la cabecera real.
+    (() => {
+      const sp = $("#splash"), root = document.documentElement;
+      if (!root.classList.contains("splash-on") || !sp) { sp?.remove(); return; }
+      const mh = $(".masthead");
+      // Rectángulo del texto (no de la caja) para que las letras coincidan exactamente
+      const textRect = (el) => { const r = document.createRange(); r.selectNodeContents(el); return r.getBoundingClientRect(); };
+      const pairs = [
+        [".splash-ujap", ".seal img:not(.arq)", false],
+        [".splash-arq", ".seal .arq", false],
+        [".splash-name", ".seal-text strong", true],
+        [".splash-school", ".seal-text span", true],
+        [".splash-tag", ".masthead .tag", true],
+      ].map(([a, b, text]) => [sp.querySelector(a), document.querySelector(b), text]).filter(([a]) => a);
+
+      let flown = false;
+      const land = () => { root.classList.add("splash-landed"); sp.remove(); };
+      const fly = (fast) => {
+        if (flown) return; flown = true;
+        sp.getAnimations({ subtree: true }).forEach((a) => a.finish());   // completa la entrada si se saltó
+        const dur = fast ? 500 : 950, easing = "cubic-bezier(.65, 0, .35, 1)", opts = { duration: dur, easing, fill: "forwards" };
+        const H = innerHeight, h = mh.getBoundingClientRect().height;
+
+        const moves = pairs.map(([from, to, text]) => {
+          from.style.animation = "none";
+          const b = to && (text ? textRect(to) : to.getBoundingClientRect());
+          if (!b || !b.width || getComputedStyle(to).display === "none") {        // sin gemelo visible (p. ej. móvil): se desvanece
+            return from.animate([{ opacity: 1 }, { opacity: 0 }], { ...opts, duration: dur * 0.4 });
+          }
+          const box = from.getBoundingClientRect(), a = text ? textRect(from) : box, k = b.width / a.width;
+          from.style.transformOrigin = `${a.left - box.left}px ${a.top - box.top}px`;   // ancla en las letras, no en la caja
+          return from.animate([{ transform: "none" },
+            { transform: `translate(${b.left - a.left}px, ${b.top - a.top}px) scale(${text ? k : b.width / a.width}, ${text ? k : b.height / a.height})` }], opts);
+        });
+        sp.querySelectorAll(".splash-rule").forEach((el) => el.animate([{ opacity: 1 }, { opacity: 0 }], { duration: dur * 0.3, fill: "forwards" }));
+        sp.querySelector(".splash-bg").animate([{ transform: "scaleY(1)" }, { transform: `scaleY(${h / H})` }], opts);
+        sp.querySelector(".splash-line").animate(
+          [{ transform: `translateY(${H - 1}px)`, opacity: 0 }, { opacity: 1, offset: 0.25 }, { transform: `translateY(${h - 1}px)`, opacity: 1 }], opts);
+        sp.style.pointerEvents = "none";
+        root.classList.add("splash-done");                                // arranca la entrada del contenido
+        Promise.all(moves.map((m) => m.finished)).then(land, land);
+      };
+      setTimeout(() => fly(false), 2400);
+      sp.addEventListener("click", () => fly(true));
+      addEventListener("keydown", () => fly(true), { once: true });
+    })();
+
+    // Cabecera fija: sombra suave al desplazarse
+    { const mh = $(".masthead"), onScroll = () => mh.classList.toggle("scrolled", scrollY > 4);
+      addEventListener("scroll", onScroll, { passive: true }); onScroll(); }
+
+    // ---------- Carga ----------
+    // Enlace directo (p. ej. desde un QR): /?d=<id>
+    { const d = byId.get(new URLSearchParams(location.search).get("d"));
+      if (d) { history.replaceState(null, "", location.pathname); openViewer(d); } }
+  </script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+{
+  "name": "patrimonio-arquidiocesis-valencia",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "preview": "wrangler dev",
+    "enhance": "node scripts/enhance.mjs",
+    "deploy:local": "node build.mjs && npx --yes wrangler@latest deploy",
+    "publish": "gh workflow run deploy.yml --repo ManguitoDeveloper/inventario-patrimonio",
+    "sync": "node scripts/sync-drive.mjs"
+  },
+  "devDependencies": {
+    "pdf-lib": "^1.17.1",
+    "pdfjs-dist": "^3.11.174",
+    "potrace": "^2.1.8",
+    "qrcode": "1.5",
+    "sharp": "^0.34.5",
+    "wrangler": "^4.166.0"
+  }
+}

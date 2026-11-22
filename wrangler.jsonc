@@ -1,0 +1,11 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "patrimonio-arquidiocesis-valencia",
+  "compatibility_date": "2026-11-19",
+  "observability": {
+    "enabled": true
+  },
+  "assets": {
+    "directory": "dist"
+  }
+}
