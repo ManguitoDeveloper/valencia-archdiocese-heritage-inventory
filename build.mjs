@@ -47,60 +47,9 @@ await cp(SRC, join(OUT, SRC), { recursive: true, filter: (s) => !basename(s).sta
 
 // ---------- 2. Imágenes -> WebP ----------
 const img = (f) => join(OUT, "img", f);
-const logoSrc = join(ASSETS, "ujap-logo.jpg");
-await sharp(logoSrc).resize({ width: 240 }).webp({ quality: 88 }).toFile(img("ujap-logo.webp"));
-// Favicon sin fondo: se borra solo el blanco conectado con el borde (relleno por inundación), así el texto
-// blanco dentro del escudo se conserva; borde suavizado para que no se vea dentado.
-async function removeOuterWhite(input) {
-  const { data, info } = await sharp(input).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
-  const { width: w, height: h } = info, N = w * h;
-  const white = (i) => Math.min(data[i * 4], data[i * 4 + 1], data[i * 4 + 2]);
-  // 1) "Engordar" el dibujo R px para cerrar las rendijas bajo la corona (así el relleno no entra al escudo)
-  const R = Math.max(4, Math.round(Math.min(w, h) / 34));
-  const ink = new Uint8Array(N); for (let i = 0; i < N; i++) ink[i] = white(i) < 225 ? 1 : 0;
-  const nb = (i, f) => { const x = i % w, y = (i / w) | 0; if (x > 0) f(i - 1); if (x < w - 1) f(i + 1); if (y > 0) f(i - w); if (y < h - 1) f(i + w); };
-  const dist = new Int32Array(N).fill(-1), queue = new Int32Array(N); let qh = 0, qt = 0;
-  for (let i = 0; i < N; i++) if (ink[i]) { dist[i] = 0; queue[qt++] = i; }
-  while (qh < qt) { const i = queue[qh++]; if (dist[i] >= R) continue; nb(i, (j) => { if (dist[j] < 0) { dist[j] = dist[i] + 1; queue[qt++] = j; } }); }
-  // 2) Fondo = blanco alcanzable desde el borde sin cruzar el dibujo engordado (entra entre las puntas de la corona)
-  const bg = new Uint8Array(N); qh = qt = 0;
-  const push = (i) => { if (!bg[i] && dist[i] < 0) { bg[i] = 1; queue[qt++] = i; } };
-  for (let x = 0; x < w; x++) { push(x); push((h - 1) * w + x); }
-  for (let y = 0; y < h; y++) { push(y * w); push(y * w + w - 1); }
-  while (qh < qt) nb(queue[qh++], push);
-  // 3) Recuperar la franja de R px pegada al dibujo por fuera (blanco a ≤ R+1 px del fondo)
-  const d2 = new Int32Array(N).fill(-1); qh = qt = 0;
-  for (let i = 0; i < N; i++) if (bg[i]) { d2[i] = 0; queue[qt++] = i; }
-  while (qh < qt) { const i = queue[qh++]; if (d2[i] > R) continue;
-    nb(i, (j) => { if (d2[j] < 0 && !ink[j]) { d2[j] = d2[i] + 1; bg[j] = 1; queue[qt++] = j; } }); }
-  // 4) Bajo la banda dorada solo es fondo lo que queda fuera de la silueta del escudo (envolvente convexa):
-  //    así no se vacían zonas blancas del diseño abiertas a los lados (p. ej. el rizo de la cinta).
-  let bandTop = h;                                                         // primera fila con tinta en ≥70 % del ancho (la banda dorada)
-  for (let y = 0; y < h && bandTop === h; y++) { let c = 0; for (let x = 0; x < w; x++) c += ink[y * w + x]; if (c >= w * 0.7) bandTop = y; }
-  const pts = [];
-  for (let y = 0; y < h; y++) { let a = -1, b = -1; for (let x = 0; x < w; x++) if (ink[y * w + x]) { if (a < 0) a = x; b = x; }
-    if (a >= 0) pts.push([a, y], [b + 1, y], [a, y + 1], [b + 1, y + 1]); }
-  pts.sort((p, q) => p[0] - q[0] || p[1] - q[1]);
-  const cross = (o, a, b) => (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0]);
-  const half = (list) => { const out = []; for (const p of list) { while (out.length >= 2 && cross(out.at(-2), out.at(-1), p) <= 0) out.pop(); out.push(p); } out.pop(); return out; };
-  const hull = [...half(pts), ...half([...pts].reverse())];
-  for (let y = bandTop; y < h; y++) {
-    const yc = y + 0.5, xs = [];
-    for (let k = 0; k < hull.length; k++) { const [x1, y1] = hull[k], [x2, y2] = hull[(k + 1) % hull.length];
-      if ((y1 <= yc && y2 > yc) || (y2 <= yc && y1 > yc)) xs.push(x1 + (yc - y1) / (y2 - y1) * (x2 - x1)); }
-    const lo = xs.length ? Math.min(...xs) : Infinity, hi = xs.length ? Math.max(...xs) : -Infinity;
-    for (let x = 0; x < w; x++) { const i = y * w + x; if (x + 0.5 >= lo && x + 0.5 <= hi) bg[i] = 0; }
-  }
-  for (let i = 0; i < N; i++) {
-    if (bg[i]) { data[i * 4 + 3] = 0; continue; }
-    const x = i % w, y = (i / w) | 0;                                     // borde: transparencia parcial según lo blanco que sea
-    const nearBg = (x > 0 && bg[i - 1]) || (x < w - 1 && bg[i + 1]) || (y > 0 && bg[i - w]) || (y < h - 1 && bg[i + w]);
-    if (nearBg) data[i * 4 + 3] = Math.round(255 * Math.min(1, (255 - white(i)) / 90));
-  }
-  return sharp(data, { raw: { width: w, height: h, channels: 4 } }).png().toBuffer();
-}
-const logoClear = await removeOuterWhite(logoSrc);
-await sharp(logoClear).trim().resize(64, 64, { fit: "contain", background: { r: 0, g: 0, b: 0, alpha: 0 } }).webp({ quality: 90, alphaQuality: 100 }).toFile(img("favicon.webp"));
+const logoSrc = join(ASSETS, "ujap-logo.png");                            // escudo UJAP, ya sin fondo
+await sharp(logoSrc).resize({ height: 240 }).webp({ quality: 88, alphaQuality: 100 }).toFile(img("ujap-logo.webp"));
+await sharp(logoSrc).resize(64, 64, { fit: "contain", background: { r: 0, g: 0, b: 0, alpha: 0 } }).webp({ quality: 90, alphaQuality: 100 }).toFile(img("favicon.webp"));
 // Foto del encabezado (assets-src/iglesia.png) y sus créditos
 const hero = {
   src: join(ASSETS, "iglesia.png"), pos: "50% 50%",

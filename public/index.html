@@ -67,8 +67,8 @@
     .masthead.scrolled { box-shadow: 0 1px 0 var(--rule), 0 6px 20px oklch(0.2 0.02 40 / .06); }
     .masthead .wrap { display: flex; align-items: center; gap: var(--space-md); padding-block: var(--space-sm); }
     .seal { display: flex; align-items: center; gap: var(--space-sm); text-decoration: none; min-width: 0; }
-    .seal img { width: 44px; height: auto; mix-blend-mode: multiply; }
-    .seal .arq { height: 40px; width: auto; }
+    .seal img { width: auto; height: 46px; }
+    .seal .arq { height: 40px; width: auto; mix-blend-mode: multiply; }
     .seal-text { line-height: 1.25; min-width: 0; }
     .seal-text strong { display: block; font-weight: 600; font-size: 0.9375rem; }
     .seal-text span { display: block; color: var(--muted); font-size: 0.8125rem; }
@@ -234,7 +234,7 @@
     .splash-line { position: absolute; left: 0; right: 0; top: 0; height: 1px; background: var(--rule); opacity: 0; }
     .splash-content { position: absolute; inset: 0; display: grid; place-items: center; align-content: center; gap: var(--space-lg); text-align: center; padding: var(--gutter); }
     .splash-logos { display: flex; align-items: center; gap: clamp(24px, 6vw, 56px); margin-bottom: var(--space-sm); }
-    .splash-ujap { width: clamp(84px, 18vw, 128px); height: auto; mix-blend-mode: multiply; animation: splash-in .7s var(--ease-out) .1s both; }
+    .splash-ujap { width: clamp(84px, 18vw, 128px); height: auto; animation: splash-in .7s var(--ease-out) .1s both; }
     .splash-rule { width: 1px; align-self: stretch; background: var(--rule-strong); transform-origin: top; animation: splash-grow .6s var(--ease-out) .35s both; }
     .splash-arq { width: clamp(96px, 20vw, 140px); height: auto; overflow: visible; }
     .arq-fill { fill: var(--ink); opacity: 0; animation: splash-fade .5s var(--ease-out) 1.55s forwards; }
@@ -301,7 +301,7 @@
     <div class="splash-line"></div>
     <div class="splash-content">
       <div class="splash-logos">
-        <img class="splash-ujap" src="/img/ujap-logo.webp" alt="" width="128" height="142" />
+        <img class="splash-ujap" src="/img/ujap-logo.webp" alt="" width="128" height="159" />
         <!--ARQ--><span class="splash-rule"></span>
         {{ARQ_SVG}}<!--/ARQ-->
       </div>
@@ -328,7 +328,7 @@
   <header class="masthead">
     <div class="wrap">
       <a class="seal" href="/">
-        <img src="/img/ujap-logo.webp" width="44" height="49" alt="Escudo de la Universidad José Antonio Páez" />
+        <img src="/img/ujap-logo.webp" width="37" height="46" alt="Escudo de la Universidad José Antonio Páez" />
         <!--ARQ--><img class="arq" src="/img/arquitectura.webp" alt="Logo de la Escuela de Arquitectura UJAP" /><!--/ARQ-->
         <span class="seal-text">
           <strong>Universidad José Antonio Páez</strong>
@@ -383,7 +383,7 @@
     <div class="wrap">
       <div>
         <div class="foot-logos">
-          <img src="/img/ujap-logo.webp" alt="Universidad José Antonio Páez" width="54" height="60" loading="lazy" />
+          <img src="/img/ujap-logo.webp" alt="Universidad José Antonio Páez" width="48" height="60" loading="lazy" />
           <!--ARQ--><img src="/img/arquitectura-completo.webp" alt="Escuela de Arquitectura UJAP" width="70" height="60" loading="lazy" /><!--/ARQ-->
         </div>
         <strong>Inventario Académico de Patrimonio Artístico y Bienes Culturales Muebles de la Arquidiócesis de Valencia</strong>
