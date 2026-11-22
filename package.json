@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "build": "node build.mjs",
-    "preview": "wrangler dev",
+    "preview": "npx wrangler dev",
     "enhance": "node scripts/enhance.mjs",
     "deploy:local": "node build.mjs && npx --yes wrangler@latest deploy",
     "publish": "gh workflow run deploy.yml --repo ManguitoDeveloper/valencia-archdiocese-heritage-inventory",

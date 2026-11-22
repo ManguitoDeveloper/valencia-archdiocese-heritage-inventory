@@ -1,7 +1,8 @@
 // Genera ./dist:
 //  - copia public/ y documentos/
 //  - optimiza las imágenes de assets-src/ a WebP
-//  - genera documentos.json, un QR por documento + uno del sitio (logo UJAP al centro)
+//  - genera un QR por documento + uno del sitio (logo UJAP al centro), estampado en cada ficha
+//  - pre-renderiza el catálogo dentro de index.html
 //  - genera qr.html, una hoja imprimible con todos los códigos QR
 import { readdir, stat, mkdir, cp, rm, writeFile, readFile, access } from "node:fs/promises";
 import { join, relative, extname, basename, sep } from "node:path";
@@ -100,22 +101,13 @@ async function removeOuterWhite(input) {
 }
 const logoClear = await removeOuterWhite(logoSrc);
 await sharp(logoClear).trim().resize(64, 64, { fit: "contain", background: { r: 0, g: 0, b: 0, alpha: 0 } }).webp({ quality: 90, alphaQuality: 100 }).toFile(img("favicon.webp"));
-await sharp(logoClear).trim().resize(180, 180, { fit: "contain", background: { r: 0, g: 0, b: 0, alpha: 0 } }).webp({ quality: 90, alphaQuality: 100 }).toFile(img("ujap-logo-180.webp"));
-// Foto del encabezado: la iglesia de la parroquia si existe assets-src/iglesia.*, si no la Catedral.
-const HEROES = [
-  { file: "iglesia", ratio: "4 / 3", pos: "50% 50%",
-    alt: "Fachada del Templo Parroquial Inmaculado Corazón de María, en El Viñedo, Valencia",
-    caption: "Templo Parroquial Inmaculado Corazón de María, El Viñedo, Valencia",
-    credit: 'Foto: <a class="ig" href="https://www.instagram.com/p/DD42s0TPUU5/" target="_blank" rel="noopener" aria-label="Martín Ustáriz en Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17.4" cy="6.6" r="1.2" fill="currentColor"/></svg>Martín Ustáriz</a>' },
-  { file: "catedral", ratio: "4 / 5", pos: "55% 40%",
-    alt: "Fachada de la Catedral Basílica de Valencia, con sus columnas corintias y la torre del reloj",
-    caption: "Catedral Basílica de Nuestra Señora del Socorro, Valencia",
-    credit: 'Foto: <a href="https://commons.wikimedia.org/wiki/File:CatedraldeValencia.JPG" target="_blank" rel="noopener">Diegoept</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" target="_blank" rel="noopener">CC BY-SA 4.0</a>' },
-];
-let hero;
-for (const h of HEROES) {
-  for (const ext of ["jpg", "jpeg", "png", "webp"]) if (!hero && await exists(join(ASSETS, `${h.file}.${ext}`))) hero = { ...h, src: join(ASSETS, `${h.file}.${ext}`) };
-}
+// Foto del encabezado (assets-src/iglesia.png) y sus créditos
+const hero = {
+  src: join(ASSETS, "iglesia.png"), pos: "50% 50%",
+  alt: "Fachada del Templo Parroquial Inmaculado Corazón de María, en El Viñedo, Valencia",
+  caption: "Templo Parroquial Inmaculado Corazón de María, El Viñedo, Valencia",
+  credit: 'Foto: <a class="ig" href="https://www.instagram.com/p/DD42s0TPUU5/" target="_blank" rel="noopener" aria-label="Martín Ustáriz en Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17.4" cy="6.6" r="1.2" fill="currentColor"/></svg>Martín Ustáriz</a>',
+};
 const heroMeta = await sharp(hero.src).metadata();
 for (const w of [800, 1400, 2000]) {
   await sharp(hero.src).rotate().resize({ width: Math.min(w, heroMeta.width) }).webp({ quality: 72, effort: 6 }).toFile(img(`portada-${w}.webp`));
@@ -215,7 +207,6 @@ for (const [i, d] of docs.entries()) {
   const joined = fit && fit.pages > 1 ? ` · ${fit.pages} páginas unidas en una` : "";
   console.log(`   ${r.ok ? `QR ${r.sizeCm} cm` : "sin QR"}${fit && !fit.skipped ? ` · hoja ${fit.width}×${fit.height} pt` : ""}${joined} → ${d.title}`);
 }
-await writeFile(join(OUT, "documentos.json"), JSON.stringify({ categorias: categories, documentos: docs }, null, 2));
 
 // ---------- 5. Plantillas ----------
 const fill = (html) => html
@@ -225,7 +216,6 @@ const fill = (html) => html
   .replaceAll("{{HERO_ALT}}", hero.alt)
   .replaceAll("{{HERO_CAPTION}}", hero.caption)
   .replaceAll("{{HERO_CREDIT}}", hero.credit)
-  .replaceAll("{{HERO_RATIO}}", hero.ratio)
   .replaceAll("{{HERO_POS}}", hero.pos)
   .replace(/<!--ARQ-->([\s\S]*?)<!--\/ARQ-->/g, hasArqLogo ? "$1" : "");
 
