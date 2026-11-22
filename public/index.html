@@ -314,12 +314,31 @@
     }
     @media (max-width: 600px) {
       .masthead .tag { display: none; }
-      .hero-text { padding-top: var(--space-3xl); padding-bottom: 88px; }   /* el crédito ocupa dos líneas */
+      .seal-text strong { font-size: clamp(0.6875rem, 3.75vw, 0.9375rem); white-space: nowrap; }
+      .seal { gap: clamp(6px, 2.4vw, 12px); }
+      .seal-text span { font-size: clamp(0.75rem, 3.4vw, 0.8125rem); }
+      /* Portada en móvil: ocupa exactamente la pantalla (svh = sin contar las barras del navegador) y todo
+         escala con el alto y el ancho disponibles; el texto se agrupa abajo y deja ver la foto arriba. */
+      .hero { min-height: calc(100svh - var(--header-h, 69px)); }
+      .hero-text { padding-top: clamp(16px, 4svh, 40px); padding-bottom: clamp(64px, 10svh, 80px); }   /* abajo: el crédito (dos líneas) */
+      .kicker { margin-bottom: clamp(6px, 1.4svh, 12px); font-size: 0.6875rem; }
+      .hero h1 { font-size: clamp(1.5rem, min(7.6vw, 4.4svh), 2.25rem); line-height: 1.04; }
+      .lede { font-size: clamp(0.8125rem, min(3.9vw, 2.2svh), 1rem); line-height: 1.5; margin-top: clamp(8px, 1.8svh, 16px); }
+      /* Una sola fila con todos los tipos: número arriba, nombre debajo */
+      .facts { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 4px; margin-top: clamp(12px, 2.6svh, 24px); }
+      .facts li { flex-direction: column; align-items: flex-start; gap: 0; font-size: clamp(0.625rem, 3vw, 0.8125rem); line-height: 1.2; min-width: 0; }
+      .facts b { font-size: clamp(1.25rem, min(6.4vw, 3.6svh), 1.75rem); line-height: 1.1; }
+      /* Botón y QR en la misma fila (el texto del QR sobra: al tocarlo se abre con opción de descarga) */
+      .hero-actions { flex-wrap: nowrap; gap: var(--space-md); margin-top: clamp(12px, 2.6svh, 24px); }
+      .hero-actions .btn { padding: clamp(11px, 1.8svh, 14px) 18px; font-size: 0.875rem; }
+      .share p { display: none; }
+      .share img { width: clamp(44px, 7svh, 60px); height: clamp(44px, 7svh, 60px); padding: 3px; }
+      .hero-credit { bottom: clamp(8px, 1.6svh, 16px); font-size: 0.6875rem; }
       .hero-photo::after { background:
-        linear-gradient(to top, oklch(0.14 0.02 40 / .92) 0%, oklch(0.15 0.02 40 / .7) 45%, oklch(0.16 0.02 40 / .3) 72%, oklch(0.16 0.02 40 / .1) 100%),
+        linear-gradient(to top, oklch(0.14 0.02 40 / .92) 0%, oklch(0.15 0.02 40 / .72) 38%, oklch(0.16 0.02 40 / .25) 60%, oklch(0.16 0.02 40 / .05) 80%),
         radial-gradient(ellipse 60% 50% at 0% 100%, oklch(0.14 0.02 40 / .4) 0%, oklch(0.16 0.02 40 / 0) 100%),
         radial-gradient(ellipse 60% 50% at 100% 100%, oklch(0.14 0.02 40 / .4) 0%, oklch(0.16 0.02 40 / 0) 100%); }
-      .facts b { font-size: 1.625rem; }
+
       .row { grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-xs) var(--space-sm); padding-inline: 0; }
       .row .n { grid-column: 1 / -1; font-size: 0.8125rem; margin-bottom: -6px; }
       .row .t { font-size: 1.0625rem; }
@@ -376,6 +395,14 @@
       <span class="tag smallcaps">Servicio Comunitario</span>
     </div>
   </header>
+  <script>
+    // Alto real de la cabecera (cambia con el ancho): la portada ocupa exactamente el resto de la pantalla
+    (function () {
+      var mh = document.querySelector(".masthead"), root = document.documentElement;
+      var set = function () { root.style.setProperty("--header-h", mh.offsetHeight + "px"); };
+      set(); addEventListener("resize", set);
+    })();
+  </script>
 
   <main>
     <section class="hero">
