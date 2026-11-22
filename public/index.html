@@ -90,12 +90,13 @@
       radial-gradient(ellipse 55% 72% at 0% 100%, oklch(0.14 0.02 40 / .55) 0%, oklch(0.15 0.02 40 / .25) 45%, oklch(0.16 0.02 40 / 0) 100%),
       radial-gradient(ellipse 45% 68% at 100% 100%, oklch(0.14 0.02 40 / .6) 0%, oklch(0.15 0.02 40 / .25) 45%, oklch(0.16 0.02 40 / 0) 100%),
       linear-gradient(oklch(0.16 0.02 40 / .2), oklch(0.16 0.02 40 / .2)); }
-    .hero-credit { position: absolute; z-index: 1; top: var(--space-sm); right: var(--gutter); max-width: calc(100% - 2 * var(--gutter)); text-align: right;
-      font-size: 0.75rem; color: oklch(0.98 0 0 / .88); text-shadow: 0 1px 2px oklch(0 0 0 / .6); }
+    /* Crédito de la foto: abajo a la derecha, sobre la franja oscura (legible sin tapar la foto) */
+    .hero-credit { position: absolute; z-index: 1; bottom: var(--space-md); right: var(--gutter); max-width: calc(100% - 2 * var(--gutter)); text-align: right;
+      font-size: 0.8125rem; line-height: 1.4; color: oklch(0.98 0 0 / .92); text-shadow: 0 1px 3px oklch(0 0 0 / .7); text-wrap: balance; }
     .hero-credit a { color: inherit; }
     a.ig { display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; vertical-align: bottom; }
     a.ig svg { width: 14px; height: 14px; flex: none; }
-    .hero-text { width: 100%; padding-block: clamp(var(--space-2xl), 11vh, var(--space-4xl)) clamp(var(--space-xl), 5vh, var(--space-3xl)); }
+    .hero-text { width: 100%; padding-block: clamp(var(--space-2xl), 11vh, var(--space-4xl)) clamp(56px, 7vh, 80px); }   /* abajo: sitio para el crédito */
     .hero-text > * { max-width: 900px; }
     .kicker { color: var(--gold-ink); margin: 0 0 var(--space-md); display: flex; align-items: center; gap: var(--space-sm); }
     .kicker::before { content: ""; width: 32px; height: 1px; background: var(--gold); }
@@ -313,7 +314,7 @@
     }
     @media (max-width: 600px) {
       .masthead .tag { display: none; }
-      .hero-text { padding-top: var(--space-3xl); }
+      .hero-text { padding-top: var(--space-3xl); padding-bottom: 88px; }   /* el crédito ocupa dos líneas */
       .hero-photo::after { background:
         linear-gradient(to top, oklch(0.14 0.02 40 / .92) 0%, oklch(0.15 0.02 40 / .7) 45%, oklch(0.16 0.02 40 / .3) 72%, oklch(0.16 0.02 40 / .1) 100%),
         radial-gradient(ellipse 60% 50% at 0% 100%, oklch(0.14 0.02 40 / .4) 0%, oklch(0.16 0.02 40 / 0) 100%),
