@@ -88,6 +88,28 @@ if (await exists(arqMark)) {
   const mark = eaujap(svg.match(/ d="([^"]+)"/)[1].trim(), w, h, { ink: "#2b211c" });
   arqSvg = mark.splash;
   await sharp(Buffer.from(mark.static), { density: 144 }).resize({ height: 120 }).webp({ quality: 90, alphaQuality: 100 }).toFile(img("arquitectura.webp"));
+
+  // Logo completo del pie: misma marca + textos. Se reemplaza SOLO la fila "EAUJAP" por las letras alineadas
+  // (los textos pequeños se conservan tal cual, sin vectorizar).
+  const fullSrc = join(ASSETS, "arquitectura-completo.png");
+  if (await exists(fullSrc)) {
+    const ink = async (file) => { const { data, info } = await sharp(file).flatten({ background: "#fff" }).greyscale().raw().toBuffer({ resolveWithObject: true });
+      return { d: data, w: info.width, h: info.height, at: (x, y) => data[y * info.width + x] < 128 }; };
+    const [F, M] = await Promise.all([ink(fullSrc), ink(arqMark)]);
+    const firstX = (I) => { for (let x = 0; x < I.w; x++) for (let y = 0; y < Math.min(I.h, 300); y++) if (I.at(x, y)) return x; };
+    const firstY = (I) => { for (let y = 0; y < I.h; y++) for (let x = 0; x < I.w; x++) if (I.at(x, y)) return y; };
+    const ox = firstX(F) - firstX(M), oy = firstY(F) - firstY(M);         // dónde está la marca dentro del logo completo
+    const [b0, b1] = mark.lettersBand;
+    // En el pie solo se alinea en horizontal: debajo están los textos "ESCUELA DE ARQUITECTURA…"
+    const footMark = eaujap(svg.match(/ d="([^"]+)"/)[1].trim(), w, h, { ink: "#000", moveDown: false });
+    const letters = await sharp(Buffer.from(footMark.lettersOnly)).png().toBuffer();
+    const full = await sharp(fullSrc).flatten({ background: "#fff" })
+      .composite([
+        { input: { create: { width: F.w, height: Math.round(b1 - b0 + 6), channels: 3, background: "#fff" } }, left: 0, top: Math.round(oy + b0 - 2) },
+        { input: letters, left: ox, top: oy },
+      ]).png().toBuffer();
+    await sharp(full).resize({ height: 180 }).webp({ quality: 88 }).toFile(img("arquitectura-completo.webp"));
+  }
 }
 
 // ---------- 3. QR con el logo UJAP al centro ----------
