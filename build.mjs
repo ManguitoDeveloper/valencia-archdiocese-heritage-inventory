@@ -10,9 +10,10 @@ import sharp from "sharp";
 import QRCode from "qrcode";
 import potrace from "potrace";
 import { stampQR } from "./lib/stamp-qr.mjs";
+import { fitPages } from "./lib/fit-pages.mjs";
 
-// Cambia esto (o usa la variable SITE_URL) si Cloudflare te asigna otra dirección.
-const SITE_URL = (process.env.SITE_URL || "https://patrimonio-arquidiocesis-valencia.manguito-dev.workers.dev").replace(/\/$/, "");
+// En GitHub la dirección viene de la variable SITE_URL; esta es la de respaldo para compilar en local.
+const SITE_URL = (process.env.SITE_URL || "https://patrimonio-arquidiocesis-valencia.arq-hillary-ruiz.workers.dev").replace(/\/$/, "");
 
 const SRC = "documentos";
 const ASSETS = "assets-src";
@@ -153,8 +154,14 @@ for (const [i, d] of docs.entries()) {
   // QR dentro de la casilla "CODIGO QR" de la ficha (solo en dist/; el original no se toca)
   const { src, dest } = srcOf.get(d.id);
   const r = await stampQR(src, dest, join(OUT, "qr", `${d.id}.webp`));
-  if (r.ok) { stamped++; d.size = (await stat(dest)).size; console.log(`   QR ${r.sizeCm} cm${r.stretched ? " (casilla agrandada)" : ""} → ${d.title}`); }
+  if (r.ok) stamped++;
   else console.warn(`⚠  ${src}: ${r.reason}; se publica sin QR.`);
+  // Una sola hoja ajustada al contenido (une fichas partidas en varias páginas)
+  let fit = null;
+  try { fit = await fitPages(dest); } catch (e) { console.warn(`⚠  ${src}: no se pudo ajustar la hoja (${e.message}); se publica tal cual.`); }
+  d.size = (await stat(dest)).size;
+  const joined = fit && fit.pages > 1 ? ` · ${fit.pages} páginas unidas en una` : "";
+  console.log(`   ${r.ok ? `QR ${r.sizeCm} cm` : "sin QR"}${fit && !fit.skipped ? ` · hoja ${fit.width}×${fit.height} pt` : ""}${joined} → ${d.title}`);
 }
 await writeFile(join(OUT, "documentos.json"), JSON.stringify({ categorias: categories, documentos: docs }, null, 2));
 
