@@ -145,6 +145,7 @@ const srcOf = new Map();
 for (const file of await walk(SRC)) {
   const rel = relative(SRC, file).split(sep);
   const info = await stat(file);
+  if (info.size === 0) { console.warn(`⚠  ${file} está vacío (0 bytes): no se publica.`); await rm(join(OUT, SRC, ...rel), { force: true }); continue; }
   if (info.size > MAX_BYTES) console.warn(`⚠  ${file} pesa más de 25 MB: Cloudflare no lo aceptará.`);
   const title = prettify(rel.at(-1));
   const folder = rel.length > 1 ? rel[0] : "";
@@ -167,7 +168,8 @@ for (const [i, d] of docs.entries()) {
   d.qr = await makeQR(d.link, `${d.id}.webp`);
   // QR dentro de la casilla "CODIGO QR" de la ficha (solo en dist/; el original no se toca)
   const { src, dest } = srcOf.get(d.id);
-  const r = await stampQR(src, dest, join(OUT, "qr", `${d.id}.webp`));
+  // Un PDF dañado no debe tumbar la publicación entera: se publica el original sin QR (ya copiado en dist/)
+  const r = await stampQR(src, dest, join(OUT, "qr", `${d.id}.webp`)).catch((e) => ({ ok: false, reason: `no se pudo leer (${e.message})` }));
   if (r.ok) stamped++;
   else console.warn(`⚠  ${src}: ${r.reason}; se publica sin QR.`);
   // Una sola hoja ajustada al contenido (une fichas partidas en varias páginas)

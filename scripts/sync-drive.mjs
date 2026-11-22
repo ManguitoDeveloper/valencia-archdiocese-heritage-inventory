@@ -5,7 +5,8 @@
 //   GOOGLE_SERVICE_ACCOUNT_JSON  contenido del JSON de la cuenta de servicio (lectura)
 //   DRIVE_FOLDER_ID              id de la carpeta raíz compartida con esa cuenta
 //
-// Reglas: solo PDF; archivos de más de 25 MB se omiten (Cloudflare no los acepta);
+// Reglas: solo PDF; archivos vacíos (0 bytes, p. ej. una subida cortada) y de más de 25 MB
+// (Cloudflare no los acepta) se omiten;
 // si hay dos archivos con el mismo nombre en una carpeta, gana el más reciente.
 import { createSign } from "node:crypto";
 import { mkdir, rm, writeFile, utimes, readdir } from "node:fs/promises";
@@ -71,6 +72,7 @@ async function walk(id, rel) {
     const name = safe(it.name);
     if (it.mimeType === FOLDER) { await walk(it.id, [...rel, name]); continue; }
     if (!/\.pdf$/i.test(name) || (it.mimeType && it.mimeType !== "application/pdf")) { warnings.push(`no es PDF, se omite: ${[...rel, name].join("/")}`); continue; }
+    if (+it.size === 0) { warnings.push(`está vacío (0 bytes), se omite — vuelve a subirlo: ${[...rel, name].join("/")}`); continue; }
     if (+it.size > MAX_BYTES) { warnings.push(`pesa más de 25 MB, se omite: ${[...rel, name].join("/")}`); continue; }
     const key = name.toLowerCase(), prev = seen.get(key);
     if (prev) {
