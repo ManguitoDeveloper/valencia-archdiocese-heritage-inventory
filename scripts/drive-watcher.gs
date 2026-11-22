@@ -7,7 +7,7 @@
  *   1. Nuevo proyecto → pega este archivo.
  *   2. Configuración del proyecto → Propiedades del script → agrega:
  *        FOLDER_ID     id de la carpeta raíz del inventario (lo que va después de /folders/ en la URL)
- *        GITHUB_REPO   ManguitoDeveloper/inventario-patrimonio
+ *        GITHUB_REPO   ManguitoDeveloper/valencia-archdiocese-heritage-inventory
  *        GITHUB_TOKEN  token de GitHub con permiso "Contents: Read and write" sobre ese repositorio
  *   3. Elige la función "instalar" y pulsa Ejecutar (acepta los permisos).
  * Para probar a mano: ejecuta "publicarAhora".

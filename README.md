@@ -81,8 +81,8 @@ Google Drive  FICHAS/                     GitHub Actions                        
 ### Install & build
 
 ```bash
-git clone https://github.com/ManguitoDeveloper/inventario-patrimonio.git
-cd inventario-patrimonio
+git clone https://github.com/ManguitoDeveloper/valencia-archdiocese-heritage-inventory.git
+cd valencia-archdiocese-heritage-inventory
 npm install
 npm run build        # builds ./dist from ./documentos (put PDFs in documentos/<Category>/)
 npm run preview      # serve locally

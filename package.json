@@ -7,7 +7,7 @@
     "preview": "wrangler dev",
     "enhance": "node scripts/enhance.mjs",
     "deploy:local": "node build.mjs && npx --yes wrangler@latest deploy",
-    "publish": "gh workflow run deploy.yml --repo ManguitoDeveloper/inventario-patrimonio",
+    "publish": "gh workflow run deploy.yml --repo ManguitoDeveloper/valencia-archdiocese-heritage-inventory",
     "sync": "node scripts/sync-drive.mjs"
   },
   "devDependencies": {
