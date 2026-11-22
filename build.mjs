@@ -13,6 +13,7 @@ import potrace from "potrace";
 import { stampQR } from "./lib/stamp-qr.mjs";
 import { fitPages } from "./lib/fit-pages.mjs";
 import { eaujap } from "./lib/eaujap.mjs";
+import { documentedBy } from "./lib/author.mjs";
 
 // En GitHub la dirección viene de la variable SITE_URL; esta es la de respaldo para compilar en local.
 const SITE_URL = (process.env.SITE_URL || "https://patrimonio-arquidiocesis-valencia.arq-hillary-ruiz.workers.dev").replace(/\/$/, "");
@@ -156,7 +157,11 @@ for (const file of await walk(SRC)) {
   while (usedIds.has(id)) id = `${slugify(title)}-${n++}`;
   usedIds.add(id);
   srcOf.set(id, { src: file, dest: join(OUT, SRC, ...rel) });
-  docs.push({ id, title, category, location, url: "/" + [SRC, ...rel].map(encodeURIComponent).join("/"), size: info.size, modified: info.mtime.toISOString() });
+  // Quién elaboró la ficha (casilla "ELABORADO POR:"); la cédula de debajo nunca se lee
+  let authors = [];
+  try { authors = await documentedBy(file); } catch (e) { console.warn(`⚠  ${file}: no se pudo leer quién la elaboró (${e.message}).`); }
+  if (!authors.length) console.warn(`⚠  ${file}: la casilla "ELABORADO POR" está vacía o no se encontró.`);
+  docs.push({ id, title, category, location, authors, url: "/" + [SRC, ...rel].map(encodeURIComponent).join("/"), size: info.size, modified: info.mtime.toISOString() });
 }
 const catOrder = (c) => (CATEGORIES.indexOf(c) + 1) || 99;
 docs.sort((a, b) => catOrder(a.category) - catOrder(b.category) || a.title.localeCompare(b.title, "es"));
@@ -177,7 +182,7 @@ for (const [i, d] of docs.entries()) {
   try { fit = await fitPages(dest); } catch (e) { console.warn(`⚠  ${src}: no se pudo ajustar la hoja (${e.message}); se publica tal cual.`); }
   d.size = (await stat(dest)).size;
   const joined = fit && fit.pages > 1 ? ` · ${fit.pages} páginas unidas en una` : "";
-  console.log(`   ${r.ok ? `QR ${r.sizeCm} cm` : "sin QR"}${fit && !fit.skipped ? ` · hoja ${fit.width}×${fit.height} pt` : ""}${joined} → ${d.title}`);
+  console.log(`   ${r.ok ? `QR ${r.sizeCm} cm` : "sin QR"}${fit && !fit.skipped ? ` · hoja ${fit.width}×${fit.height} pt` : ""}${joined} → ${d.title}${d.authors.length ? ` (${d.authors.join(", ")})` : ""}`);
 }
 
 // ---------- 5. Plantillas ----------
@@ -189,7 +194,8 @@ const fill = (html) => html
   .replaceAll("{{HERO_CAPTION}}", hero.caption)
   .replaceAll("{{HERO_CREDIT}}", hero.credit)
   .replaceAll("{{HERO_POS}}", hero.pos)
-  .replace(/<!--ARQ-->([\s\S]*?)<!--\/ARQ-->/g, hasArqLogo ? "$1" : "");
+  .replace(/<!--ARQ-->([\s\S]*?)<!--\/ARQ-->/g, hasArqLogo ? "$1" : "")
+  .replace(/<!--TEAM-->([\s\S]*?)<!--\/TEAM-->/g, docs.some((d) => d.authors.length) ? "$1" : "");
 
 // Pre-renderizado: el catálogo llega ya dibujado en el HTML (mismo código que usa el navegador)
 const require = createRequire(import.meta.url);
@@ -201,6 +207,7 @@ const prerender = {
   "{{COUNT}}": CatalogView.esc(CatalogView.count(docs, categories)),
   "{{CHIPS}}": CatalogView.chips(docs, categories, "Todas"),
   "{{RESULTS}}": CatalogView.results(docs, categories, "Todas", ""),
+  "{{TEAM}}": CatalogView.team(docs, categories),
   "{{DATA}}": inlineJSON({ categorias: categories, documentos: docs }),
   "{{CATALOG_VIEW}}": viewSource.replace(/^if \(typeof module[^\n]*\n?/m, ""),
 };
